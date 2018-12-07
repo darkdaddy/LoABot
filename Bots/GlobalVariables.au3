@@ -92,5 +92,5 @@ Global $Stats_FishCatchCount = 0
 
 ; ---------- Screen Check ------------
 Global const $CHECK_STATUS_ATTACT_HUD[1] = ["47.95:99.14 | 0x39B6FA"]
-Global const $CHECK_STATUS_FISH_NEEDLE[3] = ["49.88:50.38 | 0xE22E40 | 13 | 5", "49.94:50.59 | 0xDA3C54 | 13 | 5", "49.79:49.03 | 0xF24E67 | 13 | 5"]
+Global const $CHECK_STATUS_FISH_NEEDLE[4] = ["49.88:50.38|0xE22E40|13|5", "49.94:50.59|0xDA3C54|13|5", "49.79:49.03|0xF24E67|13|5", "49.95:49.31|0x632630|13|5"]
 Global const $CHECK_STATUS_FISH_OK_MARK[2] = ["49.75:46.06 | 0xFCD47C | 13 | 5", "49.88:45.09 | 0xFFB664 | 13 | 5"]

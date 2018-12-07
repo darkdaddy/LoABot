@@ -9,6 +9,7 @@ Global $setting_win_title = "LOST ARK (64-bit) v.1.0.4.1"
 Global $setting_thick_frame_size = "36:2"
 Global $setting_fishing_pos = "39.93:16.94"
 Global $setting_game_speed_rate = 1.0
+Global $setting_check_needle = False
 Global $setting_capture_mode = False
 
 Func reloadConfig()

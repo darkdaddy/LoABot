@@ -46,12 +46,14 @@ Func MainFishingLoop()
 	  MoveControlPos($setting_fishing_pos)
 	  SendKey( "W" )
 
-	  If _SleepAbs(5000) Then Return False
+	  If _SleepAbs(3000) Then Return False
 
-	  If Not CheckFishingNeedle() Then
-		 SendKey( "W" ) ; to cancel
-		 If _SleepAbs(2000) Then Return False
-		 ContinueLoop
+	  If $setting_check_needle Then
+		 If Not CheckFishingNeedle() Then
+			SendKey( "W" ) ; to cancel
+			If _SleepAbs(2000) Then Return False
+			ContinueLoop
+		 EndIf
 	  EndIf
 
 	  SetLog($INFO, "Fishing needle ok", $COLOR_DARKGREY)
