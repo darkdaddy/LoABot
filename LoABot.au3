@@ -216,21 +216,27 @@ Func MoveControlPos($posInfo, $speed = 10, $randomDistance = 0)
    Local $pos = ControlPos($posInfo)
 
    if $randomDistance > 0 Then
-
-	  $sign = Random(0, 1, 1)
+	  $signX = Random(0, 1, 1)
+	  $signY = Random(0, 1, 1)
 	  $halfDis = $randomDistance / 2
 	  If $halfDis <= 0 Then $halfDis = 1
-	  $rand = Random(0, $halfDis, 1)
-	  If $sign Then
-		 $rand *= 1
+	  $randX = Random(0, $halfDis, 1)
+	  $randY = Random(0, $halfDis, 1)
+	  If $signX Then
+		 $randX *= 1
 	  Else
-		 $rand *= -1
+		 $randX *= -1
+	  EndIf
+	  If $signY Then
+		 $randY *= 1
+	  Else
+		 $randY *= -1
 	  EndIf
 
- 	  _log($DEBUG, "MoveControlPos : " & $pos[0] & "x" & $pos[1] & " => " & ($pos[0] + $rand) & "x" & ($pos[1] + $rand))
+ 	  _log($DEBUG, "MoveControlPos : " & $pos[0] & "x" & $pos[1] & " => " & ($pos[0] + $randX) & "x" & ($pos[1] + $randY))
 
-	  $pos[0] = $pos[0] + $rand
-	  $pos[1] = $pos[1] + $rand
+	  $pos[0] = $pos[0] + $randX
+	  $pos[1] = $pos[1] + $randY
 
    EndIf
 
@@ -243,7 +249,10 @@ Func SendKey($key, $delay = 0)
 	  If _Sleep($delay) Then Return False
    EndIf
    ;Send( $key )
+   Local $currentActiveWindowTitle = WinGetTitle("[ACTIVE]")
+   ;_log($INFO, "active title : " & $sText & " => " & WinActive($sText))
    ControlSend ($HWnd, "", $HWnd, $key)
+   WinActivate($currentActiveWindowTitle)
 EndFunc
 
 Func RegionToRect($regionInfo)

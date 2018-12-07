@@ -56,11 +56,9 @@ Func MainFishingLoop()
 
 	  If _SleepAbs(2000) Then Return False
 
-	  If $setting_bg_mode Then
-		 If Not CheckFishingNeedle() Then
-			If _SleepAbs(1000) Then Return False
-			ContinueLoop
-		 EndIf
+	  If Not CheckFishingNeedle() Then
+		 If _SleepAbs(1000) Then Return False
+		 ContinueLoop
 	  EndIf
 
 	  SetLog($INFO, "Fishing needle ok", $COLOR_DARKGREY)
