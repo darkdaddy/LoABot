@@ -9,7 +9,7 @@ Local $gap = 10
 Local $generalRightHeight = 0
 Local $generalBottomHeight = 70
 Local $logViewWidth = 350
-Local $logViewHeight = 250
+Local $logViewHeight = 300
 Local $frameWidth = $contentPaneX + $logViewWidth + $gap + $generalRightHeight + $tabX
 Local $frameHeight = $contentPaneY + $logViewHeight + $gap + $generalBottomHeight + $tabY
 
@@ -77,11 +77,17 @@ $inputThickFraemSize = GUICtrlCreateInput("", $x, $y, 40, 20)
 ; Pixel Tolerance
 $x = $contentPaneX
 $y += 30
-GUICtrlCreateLabel("Pixel Tolerance", $x, $y)
-$inputPixelTolerance = GUICtrlCreateInput("0", $x + 120, $y - 5, 40, $h)
-$y += $h
+GUICtrlCreateLabel("Pixel Tolerance", $x, $y + 5)
+$inputPixelTolerance = GUICtrlCreateInput("0", $x + 120, $y, 40, 20)
 
-; Bot Capture Mode
+; Pixel Region Size
+$x = $contentPaneX
+$y += 30
+GUICtrlCreateLabel("Pixel Region Size", $x, $y + 5)
+$inputPixelRegion = GUICtrlCreateInput("0", $x + 120, $y, 40, 20)
+
+; Bot Background Mode
+$y += 30
 $x = $contentPaneX
 $checkBotBackgroundModeEnabled = GUICtrlCreateCheckbox("Background Mode", $x, $y, 250, 25)
 $y += 30
@@ -95,10 +101,15 @@ GUICtrlSetLimit(-1, 100, 0) ; change min/max value
 GUICtrlSetData($sliderGameSpeed, 50)
 $x += 120
 $inputGameSpeed = GUICtrlCreateInput("", $x, $y, 30, 20)
+$y += 30
+
+; Collect Mode
+$x = $contentPaneX
+$checkCollectModeEnabled = GUICtrlCreateCheckbox("Unlimited Collect Mode", $x, $y, 250, 25)
+$y += 30
 
 ; Fishing Position
 $x = $contentPaneX
-$y += 50
 $Label_2 = GUICtrlCreateLabel("Fishing Position", $x, $y + 5, 120, 20)
 $x += 120
 $inputFishingPos = GUICtrlCreateInput("", $x, $y, 100, 20)

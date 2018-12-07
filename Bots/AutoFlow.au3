@@ -1,7 +1,15 @@
 
 Func AutoFlow()
 
-   MainFishingLoop()
+   If $setting_collect_mode Then
+
+	  MainUnlimitedCollectLoop()
+
+   Else
+
+	  MainFishingLoop()
+
+   EndIf
 
    Return True
 EndFunc

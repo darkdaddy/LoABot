@@ -9,10 +9,12 @@ Global $setting_win_title = "LOST ARK (64-bit) v.1.0.4.1"
 Global $setting_thick_frame_size = "25:1"
 Global $setting_fishing_pos = "70.15:25.36"
 Global $setting_pixel_tolerance = 13
+Global $setting_pixel_region = 5
 Global $setting_game_speed_rate = 1.0
 Global $setting_fishing_pos_random_distance = 100 ; pixel
 Global $setting_bg_mode = True
 Global $setting_capture_mode = True
+Global $setting_collect_mode = False
 
 Func reloadConfig()
    saveConfig()
@@ -27,7 +29,10 @@ Func loadConfig()
    $setting_game_speed_rate = IniRead($config, $setting_common_group, "game_speed_rate", $setting_game_speed_rate)
    $setting_fishing_pos_random_distance = IniRead($config, $setting_common_group, "random_distance", $setting_fishing_pos_random_distance)
    $setting_pixel_tolerance = IniRead($config, $setting_common_group, "pixel_tolerance", $setting_pixel_tolerance)
+   $setting_pixel_region = IniRead($config, $setting_common_group, "pixel_region", $setting_pixel_region)
    $setting_bg_mode = IniRead($config, $setting_common_group, "enabled_bg_mode", "False") == "True" ? True : False
+   $setting_collect_mode = IniRead($config, $setting_common_group, "enabled_collect_mode", "False") == "True" ? True : False
+
    $setting_capture_mode = $setting_bg_mode
 
    Local $arr = StringSplit($setting_thick_frame_size, ":")
@@ -44,7 +49,9 @@ Func applyConfig()
    GUICtrlSetData($inputGameSpeed, $setting_game_speed_rate)
    GUICtrlSetData($inputRandomDistance, $setting_fishing_pos_random_distance)
    GUICtrlSetData($inputPixelTolerance, $setting_pixel_tolerance)
+   GUICtrlSetData($inputPixelRegion, $setting_pixel_region)
    GUICtrlSetState($checkBotBackgroundModeEnabled, $setting_bg_mode ? $GUI_CHECKED : $GUI_UNCHECKED)
+   GUICtrlSetState($checkCollectModeEnabled, $setting_collect_mode ? $GUI_CHECKED : $GUI_UNCHECKED)
    $rate = Number(GUICtrlRead($inputGameSpeed), $NUMBER_DOUBLE)
 
    $v = ($rate - 1.0) * 50 + 50
@@ -60,7 +67,9 @@ Func saveConfig()
    IniWrite($config, $setting_common_group, "game_speed_rate", GUICtrlRead($inputGameSpeed))
    IniWrite($config, $setting_common_group, "random_distance", GUICtrlRead($inputRandomDistance))
    IniWrite($config, $setting_common_group, "pixel_tolerance", GUICtrlRead($inputPixelTolerance))
+   IniWrite($config, $setting_common_group, "pixel_region", GUICtrlRead($inputPixelRegion))
    IniWrite($config, $setting_common_group, "enabled_bg_mode", _IsChecked($checkBotBackgroundModeEnabled))
+   IniWrite($config, $setting_common_group, "enabled_collect_mode", _IsChecked($checkCollectModeEnabled))
 
 EndFunc	;==>saveConfig
 

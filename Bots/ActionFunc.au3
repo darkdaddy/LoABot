@@ -11,12 +11,35 @@
 Local const $MaxCatchFailureCount = 5
 Local const $FishingEndDelay = 7000
 
+Func CloseAllMenu()
+   If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then SendKey( "{ESCAPE}" )
+   If CheckForPixelList($CHECK_SWAP_NPC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then SendKey( "{ESCAPE}" )
+EndFunc
+
+Func CheckEscMenu()
+   If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then
+	  Return True
+   EndIf
+   Return False
+EndFunc
+
+
+Func OpenCloseEscMenu()
+   SendKey( "{ESCAPE}" )
+   If _Sleep(1000) Then Return False
+   If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then
+	  SendKey( "{ESCAPE}" )
+   EndIf
+   If _Sleep(500) Then Return False
+EndFunc
+
+
 Func CheckFishingNeedle()
    Local const $MaxCheckNeedleCount = 5
 
    $tryCount = 0
    While $RunState And $tryCount < $MaxCheckNeedleCount
-	  If CheckForPixelList($CHECK_STATUS_FISH_SKILL_ACTIVE, $setting_pixel_tolerance, True) Then
+	  If CheckForPixelList($CHECK_STATUS_FISH_SKILL_ACTIVE, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 ExitLoop
 	  EndIf
 	  $tryCount += 1
@@ -40,7 +63,7 @@ Func MainFishingLoop()
 
 	  ;WinActivate($HWnD)
 
-	  If CheckForPixelList($CHECK_STATUS_ATTACT_HUD, $setting_pixel_tolerance) Then
+	  If CheckForPixelList($CHECK_STATUS_ATTACT_HUD, $setting_pixel_tolerance, False, $setting_pixel_region) Then
 		 SendKey( "B" )
 		 SetLog($INFO, "Change Life HUD", $COLOR_GREEN)
 		 If _SleepAbs(1000) Then Return False
@@ -71,7 +94,7 @@ Func MainFishingLoop()
 		 Local $diff = TimerDiff($timer)
 		 Local $sec = Int(Mod($diff/1000, 60))
 
-		 If CheckForPixelList($CHECK_STATUS_FISH_OK_MARK, $setting_pixel_tolerance, true) Then
+		 If CheckForPixelList($CHECK_STATUS_FISH_OK_MARK, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 			SetLog($INFO, "Catch a fish in " & $sec & "sec", $COLOR_ORANGE)
 
 			$Stats_FishCatchCount += 1
@@ -98,4 +121,28 @@ Func MainFishingLoop()
    WEnd
    ;ClickControlPos("11.88:97.67", 2)
 
+EndFunc
+
+
+Func MainUnlimitedCollectLoop()
+
+   SetLog($INFO, "Start collect mode", $COLOR_BLUE)
+
+   $tryCount = 0
+   While $RunState
+
+	  CloseAllMenu()
+
+	  SendKey( "G" )
+	  SendKey( "D" )
+
+	  If Mod($tryCount, 10) == 0 Then
+		 OpenCloseEscMenu()
+	  EndIf
+
+	  If _Sleep(500) Then Return False
+	  $tryCount += 1
+   WEnd
+
+   SetLog($INFO, "End collect mode", $COLOR_BLUE)
 EndFunc

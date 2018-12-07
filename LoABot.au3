@@ -2,12 +2,12 @@
 
 #pragma compile(FileDescription, LoA Fishing Bot)
 #pragma compile(ProductName, LoA Fishing Bot)
-#pragma compile(ProductVersion, 0.3)
-#pragma compile(FileVersion, 0.3)
+#pragma compile(ProductVersion, 0.4)
+#pragma compile(FileVersion, 0.4)
 #pragma compile(LegalCopyright, DarkJaden)
 
 $sBotName = "LoA Fishing Bot"
-$sBotVersion = "0.3"
+$sBotVersion = "0.4"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
 #include <Bots/Util/SetLog.au3>
@@ -331,7 +331,7 @@ Func MyPixelSearch($iLeft, $iTop, $iRight, $iBottom, $iColor, $iColorVariation)
    Return 0
 EndFunc
 
-Func CheckForPixel($screenInfo, $PixelTolerance = 15)
+Func CheckForPixel($screenInfo, $PixelTolerance = 15, $RegionSize = 1)
    _log($TRACE, "CheckForPixel start :" & $screenInfo);
    UpdateWindowRect()
 
@@ -342,10 +342,12 @@ Func CheckForPixel($screenInfo, $PixelTolerance = 15)
 	  $PixelTolerance = Number($infoArr[3])
    EndIf
 
-   Local $RegionSize = 1
-
    If UBound($infoArr) - 1 >= 4 Then
 	  $RegionSize = Number($infoArr[4])
+   EndIf
+
+   If $RegionSize <= 0 Then
+	  $RegionSize = 1
    EndIf
 
    $okCount = 0
@@ -382,14 +384,14 @@ Func CheckForPixel($screenInfo, $PixelTolerance = 15)
    Return False
 EndFunc
 
-Func CheckForPixelList($screenInfoList, $PixelTolerance = $DefaultTolerance, $orMode = False)
+Func CheckForPixelList($screenInfoList, $PixelTolerance = $DefaultTolerance, $orMode = False, $RegionSize = 1)
 
    If IsArray($screenInfoList) = False Then
-	  Return CheckForPixel($screenInfoList, $PixelTolerance)
+	  Return CheckForPixel($screenInfoList, $PixelTolerance, $RegionSize)
    EndIf
 
    For $p = 0 To UBound($screenInfoList) - 1
-	  If CheckForPixel($screenInfoList[$p], $PixelTolerance) Then
+	  If CheckForPixel($screenInfoList[$p], $PixelTolerance, $RegionSize) Then
 		 If $orMode Then
 			Return True
 		 EndIf
