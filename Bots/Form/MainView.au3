@@ -81,6 +81,11 @@ GUICtrlCreateLabel("Pixel Tolerance", $x, $y)
 $inputPixelTolerance = GUICtrlCreateInput("0", $x + 120, $y - 5, 40, $h)
 $y += $h
 
+; Bot Capture Mode
+$x = $contentPaneX
+$checkBotBackgroundModeEnabled = GUICtrlCreateCheckbox("Background Mode", $x, $y, 250, 25)
+$y += 30
+
 ; Game Speed
 $x = $contentPaneX
 GUICtrlCreateLabel("Game Speed", $x, $y+5, 100, 20)
@@ -108,7 +113,7 @@ GUICtrlCreateLabel("Pixel", $x + 153, $y)
 $y += $h
 
 ; Utilty Group Box
-$y += 50
+$y += 20
 GUICtrlCreateGroup("Utility", 20, $y, 347, 80)
 $x = $contentPaneX + 10
 $y += 20

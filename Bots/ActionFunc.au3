@@ -16,11 +16,11 @@ Func CheckFishingNeedle()
 
    $tryCount = 0
    While $RunState And $tryCount < $MaxCheckNeedleCount
-	  If CheckForPixelList($CHECK_STATUS_FISH_NEEDLE, $setting_pixel_tolerance, True) Then
+	  If CheckForPixelList($CHECK_STATUS_FISH_SKILL_ACTIVE, $setting_pixel_tolerance, True) Then
 		 ExitLoop
 	  EndIf
 	  $tryCount += 1
-	  If _SleepAbs(500) Then Return False
+	  If _SleepAbs(50) Then Return False
    WEnd
    If $tryCount >= $MaxCheckNeedleCount Then
 	  SetLog($INFO, "Failed to wait a fish...", $COLOR_RED)
@@ -38,7 +38,7 @@ Func MainFishingLoop()
 	  $Stats_LoopCount += 1
 	  updateStats()
 
-	  WinActivate($HWnD)
+	  ;WinActivate($HWnD)
 
 	  If CheckForPixelList($CHECK_STATUS_ATTACT_HUD, $setting_pixel_tolerance) Then
 		 SendKey( "B" )
@@ -47,15 +47,18 @@ Func MainFishingLoop()
 	  EndIf
 
 	  SetLog($INFO, "Throw fishing rod", $COLOR_DARKGREY)
-	  MoveControlPos($setting_fishing_pos, 10, $setting_fishing_pos_random_distance)
+
+	  If Not $setting_bg_mode Then
+		 MoveControlPos($setting_fishing_pos, 10, $setting_fishing_pos_random_distance)
+	  EndIf
+
 	  SendKey( "W" )
 
-	  If _SleepAbs(3000) Then Return False
+	  If _SleepAbs(2000) Then Return False
 
-	  If $setting_check_needle Then
+	  If $setting_bg_mode Then
 		 If Not CheckFishingNeedle() Then
-			SendKey( "W" ) ; to cancel
-			If _SleepAbs($FishingEndDelay) Then Return False
+			If _SleepAbs(1000) Then Return False
 			ContinueLoop
 		 EndIf
 	  EndIf

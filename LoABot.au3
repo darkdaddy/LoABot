@@ -2,12 +2,12 @@
 
 #pragma compile(FileDescription, LoA Fishing Bot)
 #pragma compile(ProductName, LoA Fishing Bot)
-#pragma compile(ProductVersion, 0.2)
-#pragma compile(FileVersion, 0.2)
+#pragma compile(ProductVersion, 0.3)
+#pragma compile(FileVersion, 0.3)
 #pragma compile(LegalCopyright, DarkJaden)
 
 $sBotName = "LoA Fishing Bot"
-$sBotVersion = "0.2"
+$sBotVersion = "0.3"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
 #include <Bots/Util/SetLog.au3>
@@ -238,11 +238,12 @@ Func MoveControlPos($posInfo, $speed = 10, $randomDistance = 0)
 EndFunc
 
 Func SendKey($key, $delay = 0)
-   WinActivate($HWnD)
+   ;WinActivate($HWnD)
    If $delay > 0 Then
 	  If _Sleep($delay) Then Return False
    EndIf
-   Send( $key )
+   ;Send( $key )
+   ControlSend ($HWnd, "", $HWnd, $key)
 EndFunc
 
 Func RegionToRect($regionInfo)
