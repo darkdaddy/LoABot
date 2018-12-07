@@ -20,7 +20,7 @@ Func CheckFishingNeedle()
 	  If _SleepAbs(500) Then Return False
    WEnd
    If $tryCount >= $MaxCheckNeedleCount Then
-	  SetLog($DEBUG, "Failed to wait a fish...", $COLOR_RED)
+	  SetLog($INFO, "Failed to wait a fish...", $COLOR_RED)
 	  Return False
    EndIf
    Return True
