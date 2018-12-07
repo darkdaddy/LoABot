@@ -2,12 +2,12 @@
 
 #pragma compile(FileDescription, LoA Fishing Bot)
 #pragma compile(ProductName, LoA Fishing Bot)
-#pragma compile(ProductVersion, 0.1)
-#pragma compile(FileVersion, 0.1)
+#pragma compile(ProductVersion, 0.2)
+#pragma compile(FileVersion, 0.2)
 #pragma compile(LegalCopyright, DarkJaden)
 
 $sBotName = "LoA Fishing Bot"
-$sBotVersion = "0.1"
+$sBotVersion = "0.2"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
 #include <Bots/Util/SetLog.au3>
@@ -212,8 +212,28 @@ Func ScreenToPosInfo($screenInfo)
    Return $infoArr[1]
 EndFunc
 
-Func MoveControlPos($posInfo, $speed = 10)
+Func MoveControlPos($posInfo, $speed = 10, $randomDistance = 0)
    Local $pos = ControlPos($posInfo)
+
+   if $randomDistance > 0 Then
+
+	  $sign = Random(0, 1, 1)
+	  $halfDis = $randomDistance / 2
+	  If $halfDis <= 0 Then $halfDis = 1
+	  $rand = Random(0, $halfDis, 1)
+	  If $sign Then
+		 $rand *= 1
+	  Else
+		 $rand *= -1
+	  EndIf
+
+ 	  _log($DEBUG, "MoveControlPos : " & $pos[0] & "x" & $pos[1] & " => " & ($pos[0] + $rand) & "x" & ($pos[1] + $rand))
+
+	  $pos[0] = $pos[0] + $rand
+	  $pos[1] = $pos[1] + $rand
+
+   EndIf
+
    MouseMove($pos[0], $pos[1], $speed)
 EndFunc
 

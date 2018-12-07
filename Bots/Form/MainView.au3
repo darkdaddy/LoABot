@@ -63,25 +63,25 @@ $x = $contentPaneX
 $y = $contentPaneY
 
 ; Game Title
-$Label_1 = GUICtrlCreateLabel("Game Title", $x, $y + 5, 60, 20)
-$x += 80
+$Label_1 = GUICtrlCreateLabel("Game Title", $x, $y + 5, 80, 20)
+$x += 120
 $inputGameTitle = GUICtrlCreateInput("", $x, $y, 200, 20)
 
 ; Game ThickFrame
 $x = $contentPaneX
 $y += 30
 $Label_2 = GUICtrlCreateLabel("Thick Frame", $x, $y + 5, 100, 20)
-$x += 80
-$inputThickFraemSize = GUICtrlCreateInput("", $x, $y, 200, 20)
+$x += 120
+$inputThickFraemSize = GUICtrlCreateInput("", $x, $y, 40, 20)
 
-; Fishing Position
+; Pixel Tolerance
 $x = $contentPaneX
 $y += 30
-$Label_2 = GUICtrlCreateLabel("Fishing Position", $x, $y + 5, 120, 20)
-$x += 120
-$inputFishingPos = GUICtrlCreateInput("", $x, $y, 100, 20)
-$y += 25
+GUICtrlCreateLabel("Pixel Tolerance", $x, $y)
+$inputPixelTolerance = GUICtrlCreateInput("0", $x + 120, $y - 5, 40, $h)
+$y += $h
 
+; Game Speed
 $x = $contentPaneX
 GUICtrlCreateLabel("Game Speed", $x, $y+5, 100, 20)
 $x += 120
@@ -90,10 +90,25 @@ GUICtrlSetLimit(-1, 100, 0) ; change min/max value
 GUICtrlSetData($sliderGameSpeed, 50)
 $x += 120
 $inputGameSpeed = GUICtrlCreateInput("", $x, $y, 30, 20)
+
+; Fishing Position
+$x = $contentPaneX
+$y += 50
+$Label_2 = GUICtrlCreateLabel("Fishing Position", $x, $y + 5, 120, 20)
+$x += 120
+$inputFishingPos = GUICtrlCreateInput("", $x, $y, 100, 20)
 $y += 25
 
-; Utilty Group Box
+; Fishing Random Distance
+$x = $contentPaneX
 $y += 10
+GUICtrlCreateLabel("Random Distance", $x, $y)
+$inputRandomDistance = GUICtrlCreateInput("0", $x + 120, $y - 5, 30, $h)
+GUICtrlCreateLabel("Pixel", $x + 153, $y)
+$y += $h
+
+; Utilty Group Box
+$y += 50
 GUICtrlCreateGroup("Utility", 20, $y, 347, 80)
 $x = $contentPaneX + 10
 $y += 20
@@ -144,8 +159,14 @@ $x = $contentPaneX
 GUICtrlCreateLabel("Fish Catch Count", $x, $y, $statLabelW, 20)
 $x += $statLabelW + $statLabelGap
 $labelStats_FishCatchCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
-GUICtrlSetColor($labelStats_FishCatchCount, $COLOR_RED)
+GUICtrlSetColor($labelStats_FishCatchCount, $COLOR_ORANGE)
 
+$y += 30
+$x = $contentPaneX
+GUICtrlCreateLabel("Fish Failure Count", $x, $y, $statLabelW, 20)
+$x += $statLabelW + $statLabelGap
+$labelStats_FishFailureCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
+GUICtrlSetColor($labelStats_FishFailureCount, $COLOR_RED)
 
 ;==================================
 ; Control Initial setting
@@ -405,6 +426,7 @@ Func clearStats()
 
    $Stats_LoopCount = 0
    $Stats_FishCatchCount = 0
+   $Stats_FishFailureCount = 0
 
    updateStats()
 EndFunc
@@ -412,4 +434,5 @@ EndFunc
 Func updateStats()
    GUICtrlSetData($labelStats_LoopCount, $Stats_LoopCount)
    GUICtrlSetData($labelStats_FishCatchCount, $Stats_FishCatchCount)
+   GUICtrlSetData($labelStats_FishFailureCount, $Stats_FishFailureCount)
 EndFunc
