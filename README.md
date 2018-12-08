@@ -18,7 +18,7 @@ Random Distance
 - Throw the fishing rod on the radom area from the based position where you already set into "Fishing Position"
 
 Background Mode
-- Run this bot with inactivate state. (But if Monitor power or the game screen is fully displayed, it could not work)
+- Run this bot with inactivate state. (But if Monitor power-off or the game screen is not fully displayed, it could not work)
 
 Unlimited Collect Mode
 - Press the G button continuously without disconnection
