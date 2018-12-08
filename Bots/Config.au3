@@ -15,6 +15,7 @@ Global $setting_fishing_pos_random_distance = 100 ; pixel
 Global $setting_bg_mode = True
 Global $setting_capture_mode = True
 Global $setting_collect_mode = False
+Global $setting_enabled_fish_trap = False
 
 Func reloadConfig()
    saveConfig()
@@ -32,7 +33,7 @@ Func loadConfig()
    $setting_pixel_region = IniRead($config, $setting_common_group, "pixel_region", $setting_pixel_region)
    $setting_bg_mode = IniRead($config, $setting_common_group, "enabled_bg_mode", "False") == "True" ? True : False
    $setting_collect_mode = IniRead($config, $setting_common_group, "enabled_collect_mode", "False") == "True" ? True : False
-
+   $setting_enabled_fish_trap = IniRead($config, $setting_common_group, "enabled_fishing_trap", "False") == "True" ? True : False
    $setting_capture_mode = $setting_bg_mode
 
    Local $arr = StringSplit($setting_thick_frame_size, ":")
@@ -52,6 +53,7 @@ Func applyConfig()
    GUICtrlSetData($inputPixelRegion, $setting_pixel_region)
    GUICtrlSetState($checkBotBackgroundModeEnabled, $setting_bg_mode ? $GUI_CHECKED : $GUI_UNCHECKED)
    GUICtrlSetState($checkCollectModeEnabled, $setting_collect_mode ? $GUI_CHECKED : $GUI_UNCHECKED)
+   GUICtrlSetState($checkFishingTrapEnabled, $setting_enabled_fish_trap ? $GUI_CHECKED : $GUI_UNCHECKED)
    $rate = Number(GUICtrlRead($inputGameSpeed), $NUMBER_DOUBLE)
 
    $v = ($rate - 1.0) * 50 + 50
@@ -70,6 +72,7 @@ Func saveConfig()
    IniWrite($config, $setting_common_group, "pixel_region", GUICtrlRead($inputPixelRegion))
    IniWrite($config, $setting_common_group, "enabled_bg_mode", _IsChecked($checkBotBackgroundModeEnabled))
    IniWrite($config, $setting_common_group, "enabled_collect_mode", _IsChecked($checkCollectModeEnabled))
+   IniWrite($config, $setting_common_group, "enabled_fishing_trap", _IsChecked($checkFishingTrapEnabled))
 
 EndFunc	;==>saveConfig
 

@@ -87,12 +87,14 @@ Global Const $MaxTryCount = 10
 Global $Stats_LoopCount = 0
 Global $Stats_FishCatchCount = 0
 Global $Stats_FishFailureCount = 0
+Global $Stats_FishTrapCount = 0
 
 ; ---------- Positions ------------
 ;Global const $POS_BUTTON_XXX = "94.6:2.3"
 
 ; ---------- Screen Check ------------
 Global const $CHECK_ESC_MENU[3] = ["54.77:44.04 | 0xBEC0C1", "54.93:41.46 | 0xDBDBDB", "54.62:46.72 | 0xBABBBB"]
+Global const $CHECK_FISH_TRAP_ACTIVE_ICON[1] = ["14.83:1.39|0x4F514F|10|3"]
 Global const $CHECK_SWAP_NPC_MENU[4] = ["96.78:93.54 | 0x29363F", "97.2:95.94 | 0x253139", "91.49:96.12 | 0x253039", "49.59:77.47 | 0x76CED9"]
 Global const $CHECK_STATUS_ATTACT_HUD[1] = ["47.95:99.14 | 0x39B6FA"]
 Global const $CHECK_STATUS_FISH_SKILL_ACTIVE[2] = ["40.15:92.34|0xBBB881|13|5", "38.02:91.14|0xD2CA9F|13|5"]

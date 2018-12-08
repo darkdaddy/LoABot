@@ -10,6 +10,8 @@
 
 Local const $MaxCatchFailureCount = 5
 Local const $FishingEndDelay = 7000
+Local const $MaxWaitCatchTime = 18
+Local const $MaxWaitFishingTrapTime = 310; 5min + extra 30sec
 
 Func CloseAllMenu()
    If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then SendKey( "{ESCAPE}" )
@@ -53,16 +55,48 @@ Func CheckFishingNeedle()
 EndFunc
 
 Func MainFishingLoop()
-   Local const $MaxWaitCatchTime = 18
    SetLog($INFO, "Go Fishing", $COLOR_BLUE)
 
+   Local $timer = TimerInit()
    Local $continuousFailCount = 0
+   Local $fishingTrapStartMsec = -1
+
    While $RunState
 	  $Stats_LoopCount += 1
 	  updateStats()
 
-	  ;WinActivate($HWnD)
+	  If $setting_enabled_fish_trap Then
+		 Local $now = TimerDiff($timer)
+		 _console("fish trap waiting : " & (($now - $fishingTrapStartMsec)/1000) & ", " & $fishingTrapStartMsec)
 
+		 If $fishingTrapStartMsec > 0 And ((($now - $fishingTrapStartMsec)) / 1000 > $MaxWaitFishingTrapTime) Then
+			SetLog($INFO, "Fishing trap collected", $COLOR_GREEN)
+			$fishingTrapStartMsec = -1
+			SendKey( "G" )
+			$Stats_FishTrapCount += 1
+			updateStats()
+			If _SleepAbs(4000) Then Return False
+		 EndIf
+
+ 		 If $fishingTrapStartMsec < 0 Then
+			If _SleepAbs(1000) Then Return False
+			SendKey( "G" )
+
+			SetLog($INFO, "checking fishing trap...", $COLOR_DARKGREY)
+			If _SleepAbs(8000) Then Return False
+
+			If CheckForPixelList($CHECK_FISH_TRAP_ACTIVE_ICON, $setting_pixel_tolerance, False, $setting_pixel_region) Then
+			   SetLog($INFO, "Fishing trap failed", $COLOR_RED)
+			   $fishingTrapStartMsec = -1
+			Else
+			   SetLog($INFO, "Fishing trap installed", $COLOR_GREEN)
+			   $fishingTrapStartMsec = $now
+			EndIf
+		 EndIf
+
+	  EndIf
+
+	  ;WinActivate($HWnD)
 	  If CheckForPixelList($CHECK_STATUS_ATTACT_HUD, $setting_pixel_tolerance, False, $setting_pixel_region) Then
 		 SendKey( "B" )
 		 SetLog($INFO, "Change Life HUD", $COLOR_GREEN)
@@ -77,10 +111,15 @@ Func MainFishingLoop()
 
 	  SendKey( "W" )
 
-	  If _SleepAbs(2000) Then Return False
+	  If _SleepAbs(2200) Then Return False
 
 	  If Not CheckFishingNeedle() Then
 		 If _SleepAbs(1000) Then Return False
+		 $continuousFailCount += 1
+		 If $continuousFailCount >= $MaxCatchFailureCount Then
+			SetLog($INFO, "Warning! too many failed to throw : " & $continuousFailCount, $COLOR_RED)
+			Return False
+		 EndIf
 		 ContinueLoop
 	  EndIf
 
@@ -88,14 +127,15 @@ Func MainFishingLoop()
 
 	  ; wait for fish!
 	  $tryCount = 0
-	  Local $timer = TimerInit()
+	  Local $now = TimerDiff($timer)
+	  Local $catchStartMsec = TimerDiff($timer)
 	  While $RunState
 		 If _Sleep(100) Then Return False
-		 Local $diff = TimerDiff($timer)
-		 Local $sec = Int(Mod($diff/1000, 60))
+		 Local $now = TimerDiff($timer)
+		 _console("fish catching : " & Number(($now - $catchStartMsec)/1000, 1))
 
 		 If CheckForPixelList($CHECK_STATUS_FISH_OK_MARK, $setting_pixel_tolerance, True, $setting_pixel_region) Then
-			SetLog($INFO, "Catch a fish in " & $sec & "sec", $COLOR_ORANGE)
+			SetLog($INFO, "Catch a fish in " & Number(($now - $catchStartMsec)/1000, 1) & "sec", $COLOR_ORANGE)
 
 			$Stats_FishCatchCount += 1
 			updateStats()
@@ -106,12 +146,12 @@ Func MainFishingLoop()
 			ExitLoop
 		 EndIf
 
-		 If $sec > $MaxWaitCatchTime Then
+		 If (($now - $catchStartMsec)/1000) > $MaxWaitCatchTime Then
 			SetLog($INFO, "Failed to catch a fish!", $COLOR_RED)
 			SendKey( "W" ) ; to cancel
 			$continuousFailCount += 1
 			If $continuousFailCount >= $MaxCatchFailureCount Then
-			   SetLog($INFO, "Warning! too many failed : count = " & $continuousFailCount, $COLOR_RED)
+			   SetLog($INFO, "Warning! too many failed to catch : " & $continuousFailCount, $COLOR_RED)
 			   Return False
 			EndIf
 			If _SleepAbs($FishingEndDelay) Then Return False

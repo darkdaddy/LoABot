@@ -9,7 +9,7 @@ Local $gap = 10
 Local $generalRightHeight = 0
 Local $generalBottomHeight = 70
 Local $logViewWidth = 350
-Local $logViewHeight = 300
+Local $logViewHeight = 330
 Local $frameWidth = $contentPaneX + $logViewWidth + $gap + $generalRightHeight + $tabX
 Local $frameHeight = $contentPaneY + $logViewHeight + $gap + $generalBottomHeight + $tabY
 
@@ -108,6 +108,11 @@ $x = $contentPaneX
 $checkCollectModeEnabled = GUICtrlCreateCheckbox("Unlimited Collect Mode", $x, $y, 250, 25)
 $y += 30
 
+; Fishing Trap
+$x = $contentPaneX
+$checkFishingTrapEnabled = GUICtrlCreateCheckbox("Fishing Trap", $x, $y, 250, 25)
+$y += 30
+
 ; Fishing Position
 $x = $contentPaneX
 $Label_2 = GUICtrlCreateLabel("Fishing Position", $x, $y + 5, 120, 20)
@@ -183,6 +188,13 @@ GUICtrlCreateLabel("Fish Failure Count", $x, $y, $statLabelW, 20)
 $x += $statLabelW + $statLabelGap
 $labelStats_FishFailureCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
 GUICtrlSetColor($labelStats_FishFailureCount, $COLOR_RED)
+
+$y += 30
+$x = $contentPaneX
+GUICtrlCreateLabel("Fish Trap Count", $x, $y, $statLabelW, 20)
+$x += $statLabelW + $statLabelGap
+$labelStats_FishTrapCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
+GUICtrlSetColor($labelStats_FishTrapCount, $COLOR_GREEN)
 
 ;==================================
 ; Control Initial setting
@@ -443,6 +455,7 @@ Func clearStats()
    $Stats_LoopCount = 0
    $Stats_FishCatchCount = 0
    $Stats_FishFailureCount = 0
+   $Stats_FishTrapCount = 0
 
    updateStats()
 EndFunc
@@ -451,4 +464,5 @@ Func updateStats()
    GUICtrlSetData($labelStats_LoopCount, $Stats_LoopCount)
    GUICtrlSetData($labelStats_FishCatchCount, $Stats_FishCatchCount)
    GUICtrlSetData($labelStats_FishFailureCount, $Stats_FishFailureCount)
+   GUICtrlSetData($labelStats_FishTrapCount, $Stats_FishTrapCount)
 EndFunc
