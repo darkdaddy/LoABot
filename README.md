@@ -9,7 +9,7 @@
 <br>if it's more greater, more flexible but higher wrong detection rate.
 5. Move the cursor on the screen where you want the fishing position and then press Ctrl+Shift+C hotkey.
 <br>Maybe the position info is filled in the Edit Box on right side of the "Calc" button.
-<br>And you just copy the first data of that like "XX:YY" info "Fishing Position" Editbox. eg) 67:31
+<br>And you just copy the first data of that like "XX:YY" info on "Fishing Position" Editbox. eg) 67:31
 6. Press Start Button
 7. End.
 
