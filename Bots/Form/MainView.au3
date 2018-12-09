@@ -362,7 +362,7 @@ Func calcPos()
 
 	  $color = GetPixelColor($orgPosX, $orgPosY);
 	  $colorStr = "0x" & $color
-	  $result = $result & " | " & $colorStr
+	  $result = $result & "|" & $colorStr
 
 	  ClipPut($result)
 

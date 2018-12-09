@@ -48,11 +48,37 @@ Func CheckFishingNeedle()
 	  If _SleepAbs(50) Then Return False
    WEnd
    If $tryCount >= $MaxCheckNeedleCount Then
-	  SetLog($INFO, "Failed to wait a fish...", $COLOR_RED)
+	  SetLog($INFO, "Failed to throw the rod...", $COLOR_RED)
 	  Return False
    EndIf
    Return True
 EndFunc
+
+
+Func CheckAndRunWebSkill()
+  If Not CheckForPixelList($CHECK_STATUS_WEB_SKILL_ACTIVE, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+	  Return
+   EndIf
+   If _SleepAbs(300) Then Return False
+   SendKey( "S" )
+   SetLog($INFO, "Web skill start", $COLOR_GREEN)
+   If _SleepAbs(7000) Then Return False
+
+   SetLog($INFO, "Pressing Space key!!", $COLOR_DARKGREY)
+
+   Local $timer = TimerInit()
+   While $RunState
+	  SendKey( "{SPACE}{SPACE}" )
+	  If _SleepAbs(298) Then Return False
+	  Local $now = TimerDiff($timer)
+	  _console("web skill waiting : " & ($now/1000) & ", " & $timer)
+	  If ($now / 1000 > 10) Then
+		 ExitLoop
+	  EndIf
+   WEnd
+   SetLog($INFO, "Web skill end", $COLOR_DARKGREY)
+EndFunc
+
 
 Func MainFishingLoop()
    SetLog($INFO, "Go Fishing", $COLOR_BLUE)
@@ -61,9 +87,21 @@ Func MainFishingLoop()
    Local $continuousFailCount = 0
    Local $fishingTrapStartMsec = -1
 
+   If $setting_enabled_fish_trap Then
+	  If Not CheckForPixelList($CHECK_FISH_TRAP_ACTIVE_ICON, $setting_pixel_tolerance, False, $setting_pixel_region) Then
+		  Local $now = TimerDiff($timer)
+		  $fishingTrapStartMsec = $now
+		  SetLog($INFO, "Fishing trap already installed", $COLOR_GREEN)
+	  EndIf
+   EndIf
+
    While $RunState
+	  loadConfig()
+
 	  $Stats_LoopCount += 1
 	  updateStats()
+
+	  CheckAndRunWebSkill()
 
 	  If $setting_enabled_fish_trap Then
 		 Local $now = TimerDiff($timer)
