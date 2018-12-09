@@ -213,12 +213,13 @@ Func MainUnlimitedCollectLoop()
 
 	  SendKey( "G" )
 	  SendKey( "D" )
+	  SendKey( "{SPACE}" )
 
-	  If Mod($tryCount, 10) == 0 Then
+	  If $setting_open_esc_menu And Mod($tryCount, 10) == 0 Then
 		 OpenCloseEscMenu()
 	  EndIf
 
-	  If _Sleep(500) Then Return False
+	  If _Sleep(1000) Then Return False
 	  $tryCount += 1
    WEnd
 

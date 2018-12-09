@@ -105,7 +105,10 @@ $y += 30
 
 ; Collect Mode
 $x = $contentPaneX
-$checkCollectModeEnabled = GUICtrlCreateCheckbox("Unlimited Collect Mode", $x, $y, 250, 25)
+$w = 150
+$checkCollectModeEnabled = GUICtrlCreateCheckbox("Unlimited Collect Mode", $x, $y, $w, 25)
+$x += ($w + 10)
+$checkOpenEscMenuEnabled = GUICtrlCreateCheckbox("ESC Menu", $x, $y, 100, 25)
 $y += 30
 
 ; Fishing Trap

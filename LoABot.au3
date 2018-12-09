@@ -2,12 +2,12 @@
 
 #pragma compile(FileDescription, LoA Fishing Bot)
 #pragma compile(ProductName, LoA Fishing Bot)
-#pragma compile(ProductVersion, 0.6)
-#pragma compile(FileVersion, 0.6)
+#pragma compile(ProductVersion, 0.7)
+#pragma compile(FileVersion, 0.7)
 #pragma compile(LegalCopyright, DarkJaden)
 
 $sBotName = "LoA Fishing Bot"
-$sBotVersion = "0.6"
+$sBotVersion = "0.7"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
 #include <Bots/Util/SetLog.au3>
