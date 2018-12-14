@@ -134,7 +134,6 @@ Func MainFishingLoop()
 
 	  EndIf
 
-	  ;WinActivate($HWnD)
 	  If CheckForPixelList($CHECK_STATUS_ATTACT_HUD, $setting_pixel_tolerance, False, $setting_pixel_region) Then
 		 SendKey( "B" )
 		 SetLog($INFO, "Change Life HUD", $COLOR_GREEN)
@@ -144,6 +143,7 @@ Func MainFishingLoop()
 	  SetLog($INFO, "Throw fishing rod", $COLOR_DARKGREY)
 
 	  If Not $setting_bg_mode Then
+		 WinActivate($HWnD)
 		 MoveControlPos($setting_fishing_pos, 10, $setting_fishing_pos_random_distance)
 	  EndIf
 
@@ -197,10 +197,9 @@ Func MainFishingLoop()
 		 EndIF
 	  WEnd
    WEnd
-   ;ClickControlPos("11.88:97.67", 2)
+   ;ControlPos("11.88:97.67", 2)Click
 
 EndFunc
-
 
 Func MainUnlimitedCollectLoop()
 
@@ -224,4 +223,31 @@ Func MainUnlimitedCollectLoop()
    WEnd
 
    SetLog($INFO, "End collect mode", $COLOR_BLUE)
+EndFunc
+
+
+Func MainSkillTripodChangeExpLoop()
+
+   SetLog($INFO, "Start Skill Tripod Change Exp mode", $COLOR_BLUE)
+
+   Local $iNb = 0
+   While $RunState
+	  WinActivate($HWnD)
+
+	  If Mod($iNb, 2) = 0 Then
+		 MoveControlPos("80.55:28.9", 10, 1)
+		 MouseClick($MOUSE_CLICK_LEFT)
+	  Else
+		 MoveControlPos("93.26:28.9", 10, 1)
+		 MouseClick($MOUSE_CLICK_LEFT)
+	  EndIf
+	  MoveControlPos("86.51:68.7", 10, 1)
+	  MouseClick($MOUSE_CLICK_LEFT)
+
+	  If _Sleep(1000) Then Return False
+
+	  $iNb += 1
+   WEnd
+
+   SetLog($INFO, "Start Skill Tripod Change Exp Mode mode", $COLOR_BLUE)
 EndFunc

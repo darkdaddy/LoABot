@@ -2,12 +2,12 @@
 
 #pragma compile(FileDescription, LoA Fishing Bot)
 #pragma compile(ProductName, LoA Fishing Bot)
-#pragma compile(ProductVersion, 0.7)
-#pragma compile(FileVersion, 0.7)
+#pragma compile(ProductVersion, 0.8)
+#pragma compile(FileVersion, 0.8WinActivate($HWnD))
 #pragma compile(LegalCopyright, DarkJaden)
 
 $sBotName = "LoA Fishing Bot"
-$sBotVersion = "0.7"
+$sBotVersion = "0.8"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
 #include <Bots/Util/SetLog.au3>
@@ -50,6 +50,7 @@ loadConfig()
 applyConfig()
 
 HotKeySet("^+c", "calcHotKeyFunc")
+HotKeySet("^+x", "btnStop")
 
 Func calcHotKeyFunc()
    Opt("MouseCoordMode", 1)

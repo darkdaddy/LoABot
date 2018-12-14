@@ -53,6 +53,9 @@ $btnStop = GUICtrlCreateButton("Stop", $x, $generalBottomY, $btnPlayWidth, 55)
 $btnPause = GUICtrlCreateButton("Pause", $x + $btnPlayWidth + $btnGap, $generalBottomY, $btnPlayWidth, 55)
 $btnResume = GUICtrlCreateButton("Resume", $x + $btnPlayWidth + $btnGap, $generalBottomY, $btnPlayWidth, 55)
 
+$x += $btnPlayWidth + $btnGap + $btnPlayWidth + $btnGap
+$btnExpTripodChange = GUICtrlCreateButton("Exp : Tripod Change", $x, $generalBottomY, 140, 25)
+
 ;-----------------------------------------------------------
 ; Tab : Option
 ;-----------------------------------------------------------
@@ -208,6 +211,7 @@ GUICtrlSetOnEvent($btnStart, "btnStart")
 GUICtrlSetOnEvent($btnStop, "btnStop")	; already handled in GUIControl
 GUICtrlSetOnEvent($btnPause, "btnPause")
 GUICtrlSetOnEvent($btnResume, "btnResume")
+GUICtrlSetOnEvent($btnExpTripodChange, "btnExpTripodChange")
 GUICtrlSetOnEvent($idTab, "tabChanged")
 GUICtrlSetOnEvent($btnCalcPos, "btnCalcPos")
 GUICtrlSetOnEvent($btnTestColor, "btnTestColor")
@@ -270,6 +274,7 @@ Func InitBot()
    UpdateWindowRect()
    GUICtrlSetState($btnPause, $GUI_ENABLE)
    GUICtrlSetState($btnResume, $GUI_ENABLE)
+   GUICtrlSetState($btnExpTripodChange, $GUI_DISABLE)
 
    Return True
 EndFunc
@@ -309,6 +314,7 @@ Func btnStop()
 
    GUICtrlSetState($btnPause, $GUI_DISABLE)
    GUICtrlSetState($btnResume, $GUI_DISABLE)
+   GUICtrlSetState($btnExpTripodChange, $GUI_ENABLE)
 
    SetLog($INFO, "Bot has stopped", $COLOR_RED)
 EndFunc
@@ -339,6 +345,25 @@ Func btnResume()
    $PauseBot = False
 
    SetLog($INFO, "Bot has resumed", $COLOR_MEDBLUE)
+EndFunc
+
+Func btnExpTripodChange()
+
+   _log($DEBUG, "EXP TRIPOD CHANGE CLICKED" )
+
+   btnStop()
+
+   clearStats()
+
+   _GUICtrlEdit_SetText($txtLog, "")
+   _WinAPI_EmptyWorkingSet(WinGetProcess($HWnD)) ; Reduce Game Memory Usage
+
+   If InitBot() = False Then
+	  Return
+   EndIf
+
+   MainSkillTripodChangeExpLoop()
+
 EndFunc
 
 Func calcPos()
