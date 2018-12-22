@@ -211,8 +211,6 @@ Func MainUnlimitedCollectLoop()
 	  CloseAllMenu()
 
 	  SendKey( "G" )
-	  SendKey( "D" )
-	  SendKey( "{SPACE}" )
 
 	  If $setting_open_esc_menu And Mod($tryCount, 10) == 0 Then
 		 OpenCloseEscMenu()
@@ -235,13 +233,13 @@ Func MainSkillTripodChangeExpLoop()
 	  WinActivate($HWnD)
 
 	  If Mod($iNb, 2) = 0 Then
-		 MoveControlPos("80.55:28.9", 10, 1)
+		 MoveControlPos("83.56:19.85", 10, 1)
 		 MouseClick($MOUSE_CLICK_LEFT)
 	  Else
-		 MoveControlPos("93.26:28.9", 10, 1)
+		 MoveControlPos("95.59:18.47", 10, 1)
 		 MouseClick($MOUSE_CLICK_LEFT)
 	  EndIf
-	  MoveControlPos("86.51:68.7", 10, 1)
+	  MoveControlPos("91.03:59.56", 10, 1)
 	  MouseClick($MOUSE_CLICK_LEFT)
 
 	  If _Sleep(1000) Then Return False
