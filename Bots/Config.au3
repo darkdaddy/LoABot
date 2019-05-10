@@ -14,9 +14,11 @@ Global $setting_game_speed_rate = 1.0
 Global $setting_fishing_pos_random_distance = 100 ; pixel
 Global $setting_bg_mode = True
 Global $setting_capture_mode = True
-Global $setting_collect_mode = False
+Global $setting_auto_mode = 0
 Global $setting_open_esc_menu = True
 Global $setting_enabled_fish_trap = False
+Global $setting_sea_travel_key_delay = 500
+Global $setting_sea_travel_key_list = "{ALTDOWN},51.97:33.8,{ALTUP},{ALTDOWN},65.66:25.3,{ALTUP},{ALTDOWN},67.53:30.93,{ALTUP},{ALTDOWN},52.02:31.02,{ALTUP},M,52.02:31.02,{ALTDOWN},52.02:31.02,{ALTUP},{ESCAPE}"
 
 Func reloadConfig()
    saveConfig()
@@ -33,7 +35,7 @@ Func loadConfig()
    $setting_pixel_tolerance = IniRead($config, $setting_common_group, "pixel_tolerance", $setting_pixel_tolerance)
    $setting_pixel_region = IniRead($config, $setting_common_group, "pixel_region", $setting_pixel_region)
    $setting_bg_mode = IniRead($config, $setting_common_group, "enabled_bg_mode", "False") == "True" ? True : False
-   $setting_collect_mode = IniRead($config, $setting_common_group, "enabled_collect_mode", "False") == "True" ? True : False
+   $setting_auto_mode = Number(IniRead($config, $setting_common_group, "auto_mode", "0"))
    $setting_open_esc_menu = IniRead($config, $setting_common_group, "enabled_open_esc_menu", "False") == "True" ? True : False
    $setting_enabled_fish_trap = IniRead($config, $setting_common_group, "enabled_fishing_trap", "False") == "True" ? True : False
    $setting_capture_mode = $setting_bg_mode
@@ -54,9 +56,12 @@ Func applyConfig()
    GUICtrlSetData($inputPixelTolerance, $setting_pixel_tolerance)
    GUICtrlSetData($inputPixelRegion, $setting_pixel_region)
    GUICtrlSetState($checkBotBackgroundModeEnabled, $setting_bg_mode ? $GUI_CHECKED : $GUI_UNCHECKED)
-   GUICtrlSetState($checkCollectModeEnabled, $setting_collect_mode ? $GUI_CHECKED : $GUI_UNCHECKED)
    GUICtrlSetState($checkOpenEscMenuEnabled, $setting_open_esc_menu ? $GUI_CHECKED : $GUI_UNCHECKED)
    GUICtrlSetState($checkFishingTrapEnabled, $setting_enabled_fish_trap ? $GUI_CHECKED : $GUI_UNCHECKED)
+
+   _GUICtrlComboBox_SetCurSel($comboAutoMode, Int($setting_auto_mode))
+   _GUICtrlRichEdit_AppendText($txtKeyList, $setting_sea_travel_key_list)
+
    $rate = Number(GUICtrlRead($inputGameSpeed), $NUMBER_DOUBLE)
 
    $v = ($rate - 1.0) * 50 + 50
@@ -74,9 +79,9 @@ Func saveConfig()
    IniWrite($config, $setting_common_group, "pixel_tolerance", GUICtrlRead($inputPixelTolerance))
    IniWrite($config, $setting_common_group, "pixel_region", GUICtrlRead($inputPixelRegion))
    IniWrite($config, $setting_common_group, "enabled_bg_mode", _IsChecked($checkBotBackgroundModeEnabled))
-   IniWrite($config, $setting_common_group, "enabled_collect_mode", _IsChecked($checkCollectModeEnabled))
    IniWrite($config, $setting_common_group, "enabled_open_esc_menu", _IsChecked($checkOpenEscMenuEnabled))
    IniWrite($config, $setting_common_group, "enabled_fishing_trap", _IsChecked($checkFishingTrapEnabled))
+   IniWrite($config, $setting_common_group, "auto_mode", _GUICtrlComboBox_GetCurSel($comboAutoMode))
 
 EndFunc	;==>saveConfig
 

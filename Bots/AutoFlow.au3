@@ -1,13 +1,17 @@
 
 Func AutoFlow()
 
-   If $setting_collect_mode Then
+   If $setting_auto_mode == $AUTO_MODE_FISHING Then
+
+	  MainFishingLoop
+
+   ElseIf $setting_auto_mode == $AUTO_MODE_COLLECT Then
 
 	  MainUnlimitedCollectLoop()
 
-   Else
+   ElseIf $setting_auto_mode == $AUTO_MODE_SEA_TRAVEL Then
 
-	  MainFishingLoop()
+	  MainSeaTravelLoop()
 
    EndIf
 

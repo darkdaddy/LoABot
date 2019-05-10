@@ -247,5 +247,20 @@ Func MainSkillTripodChangeExpLoop()
 	  $iNb += 1
    WEnd
 
-   SetLog($INFO, "Start Skill Tripod Change Exp Mode mode", $COLOR_BLUE)
+   SetLog($INFO, "End Skill Tripod Change Exp Mode mode", $COLOR_BLUE)
+EndFunc
+
+
+Func MainSeaTravelLoop()
+
+   SetLog($INFO, "Start Sea Travel Mode", $COLOR_BLUE)
+
+   While $RunState
+	  WinActivate($HWnD)
+
+	  DoKeyList($setting_sea_travel_key_list)
+
+   WEnd
+
+   SetLog($INFO, "End Sea Travel Mode", $COLOR_BLUE)
 EndFunc

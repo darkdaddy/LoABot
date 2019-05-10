@@ -1,12 +1,12 @@
 #RequireAdmin
 
-#pragma compile(FileDescription, LoA Fishing Bot)
-#pragma compile(ProductName, LoA Fishing Bot)
+#pragma compile(FileDescription, LoA Bot)
+#pragma compile(ProductName, LoA Bot)
 #pragma compile(ProductVersion, 0.9)
 #pragma compile(FileVersion, 0.9)
 #pragma compile(LegalCopyright, DarkJaden)
 
-$sBotName = "LoA Fishing Bot"
+$sBotName = "LoA Bot"
 $sBotVersion = "0.9"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
@@ -422,4 +422,21 @@ Func WaitForPixel($screenInfo)
 	  EndIf
    Until TimerDiff($timer) > $DefaultWaitMsec
    return False
+EndFunc
+
+Func DoKeyList($keyListStr)
+
+   Local $keyArray = StringSplit($keyListStr, ",")
+
+   For $c = 1 To UBound($keyArray) - 1
+	  If _Sleep($setting_sea_travel_key_delay) Then ExitLoop
+
+	  If StringInStr($keyArray[$c], ":") > 0 Then
+		 ; Mouse Click
+		 ClickControlPos($keyArray[$c])
+	  Else
+		 ; Key Press
+		 SendKey($keyArray[$c])
+	  EndIf
+   Next
 EndFunc

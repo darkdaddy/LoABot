@@ -74,6 +74,9 @@ Global Const $COLOR_PINK = 0xf1735f
 Global Const $COLOR_DARKGREY = 0x555555
 
 ; ---------- Logic -----------
+Global Const $AUTO_MODE_FISHING = 0
+Global Const $AUTO_MODE_COLLECT = 1
+Global Const $AUTO_MODE_SEA_TRAVEL = 2
 
 ; ---------- Settings -----------
 Global Const $RetryWaitCount = 30

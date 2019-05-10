@@ -9,7 +9,7 @@ Local $gap = 10
 Local $generalRightHeight = 0
 Local $generalBottomHeight = 70
 Local $logViewWidth = 350
-Local $logViewHeight = 330
+Local $logViewHeight = 440
 Local $frameWidth = $contentPaneX + $logViewWidth + $gap + $generalRightHeight + $tabX
 Local $frameHeight = $contentPaneY + $logViewHeight + $gap + $generalBottomHeight + $tabY
 
@@ -45,16 +45,14 @@ $txtLog = _GUICtrlRichEdit_Create($mainView, "", $contentPaneX, $contentPaneY, $
 ; Start/Stop Button
 $x = $contentPaneX
 
-Local $btnPlayWidth = 60
+Local $btnPlayWidth = 90
+Local $btnCommonWidth = 90
 Local $btnWidth = 90
 Local $btnGap = 5
 $btnStart = GUICtrlCreateButton("Start", $x, $generalBottomY, $btnPlayWidth, 55)
-$btnStop = GUICtrlCreateButton("Stop", $x, $generalBottomY, $btnPlayWidth, 55)
-$btnPause = GUICtrlCreateButton("Pause", $x + $btnPlayWidth + $btnGap, $generalBottomY, $btnPlayWidth, 55)
-$btnResume = GUICtrlCreateButton("Resume", $x + $btnPlayWidth + $btnGap, $generalBottomY, $btnPlayWidth, 55)
-
-$x += $btnPlayWidth + $btnGap + $btnPlayWidth + $btnGap
-$btnExpTripodChange = GUICtrlCreateButton("Exp : Tripod Change", $x, $generalBottomY, 140, 25)
+$btnStop = GUICtrlCreateButton("Stop", $x, $generalBottomY, $btnCommonWidth, 55)
+$btnPause = GUICtrlCreateButton("Pause", $x + $btnPlayWidth + $btnGap, $generalBottomY, $btnCommonWidth, 55)
+$btnResume = GUICtrlCreateButton("Resume", $x + $btnPlayWidth + $btnGap, $generalBottomY, $btnCommonWidth, 55)
 
 ;-----------------------------------------------------------
 ; Tab : Option
@@ -104,14 +102,22 @@ GUICtrlSetLimit(-1, 100, 0) ; change min/max value
 GUICtrlSetData($sliderGameSpeed, 50)
 $x += 120
 $inputGameSpeed = GUICtrlCreateInput("", $x, $y, 30, 20)
+$y += 40
+
+; Auto Mode
+$x = $contentPaneX
+GUICtrlCreateLabel("Auto Mode Select", $x, $y)
+$comboAutoMode = GUICtrlCreateCombo("", $x + 130, $y - 5, 120, $h)
+GUICtrlSetData($comboAutoMode, "Fishing")
+GUICtrlSetData($comboAutoMode, "Collect")
+GUICtrlSetData($comboAutoMode, "Sea Travel")
+_GUICtrlComboBox_SetCurSel($comboAutoMode, 1)
 $y += 30
 
 ; Collect Mode
 $x = $contentPaneX
 $w = 150
-$checkCollectModeEnabled = GUICtrlCreateCheckbox("Unlimited Collect Mode", $x, $y, $w, 25)
-$x += ($w + 10)
-$checkOpenEscMenuEnabled = GUICtrlCreateCheckbox("ESC Menu", $x, $y, 100, 25)
+$checkOpenEscMenuEnabled = GUICtrlCreateCheckbox("Collect Mode ESC Menu Toggle", $x, $y, 200, 25)
 $y += 30
 
 ; Fishing Trap
@@ -133,6 +139,10 @@ GUICtrlCreateLabel("Random Distance", $x, $y)
 $inputRandomDistance = GUICtrlCreateInput("0", $x + 120, $y - 5, 30, $h)
 GUICtrlCreateLabel("Pixel", $x + 153, $y)
 $y += $h
+
+; Sea Travel Key List
+$txtKeyList = _GUICtrlRichEdit_Create($mainView, "", $x, $y, 280, 50, BitOR($ES_MULTILINE, $ES_READONLY, $WS_VSCROLL))
+$y += 60
 
 ; Utilty Group Box
 $y += 20
@@ -211,7 +221,6 @@ GUICtrlSetOnEvent($btnStart, "btnStart")
 GUICtrlSetOnEvent($btnStop, "btnStop")	; already handled in GUIControl
 GUICtrlSetOnEvent($btnPause, "btnPause")
 GUICtrlSetOnEvent($btnResume, "btnResume")
-GUICtrlSetOnEvent($btnExpTripodChange, "btnExpTripodChange")
 GUICtrlSetOnEvent($idTab, "tabChanged")
 GUICtrlSetOnEvent($btnCalcPos, "btnCalcPos")
 GUICtrlSetOnEvent($btnTestColor, "btnTestColor")
@@ -225,7 +234,7 @@ GUICtrlSetState($btnResume, $GUI_HIDE)
 GUICtrlSetState($btnPause, $GUI_DISABLE)
 GUICtrlSetState($btnResume, $GUI_DISABLE)
 GUISetState(@SW_SHOW, $mainView)
-
+ControlHide($mainView, "", $txtKeyList)
 
 ;==================================
 ; Control Callback
@@ -234,7 +243,12 @@ GUISetState(@SW_SHOW, $mainView)
 Func tabChanged()
    If _GUICtrlTab_GetCurSel($idTab) = 0 Then
 	  ControlShow($mainView, "", $txtLog)
+	  ControlHide($mainView, "", $txtKeyList)
+   ElseIf _GUICtrlTab_GetCurSel($idTab) = 1 Then
+	  ControlShow($mainView, "", $txtKeyList)
+	  ControlHide($mainView, "", $txtLog)
    Else
+	  ControlHide($mainView, "", $txtKeyList)
 	  ControlHide($mainView, "", $txtLog)
    EndIf
 EndFunc
@@ -274,13 +288,14 @@ Func InitBot()
    UpdateWindowRect()
    GUICtrlSetState($btnPause, $GUI_ENABLE)
    GUICtrlSetState($btnResume, $GUI_ENABLE)
-   GUICtrlSetState($btnExpTripodChange, $GUI_DISABLE)
 
    Return True
 EndFunc
 
 
 Func btnStart()
+    DoKeyList($setting_sea_travel_key_list)
+
    _log($DEBUG, "START BUTTON CLICKED" )
 
    clearStats()
@@ -314,7 +329,6 @@ Func btnStop()
 
    GUICtrlSetState($btnPause, $GUI_DISABLE)
    GUICtrlSetState($btnResume, $GUI_DISABLE)
-   GUICtrlSetState($btnExpTripodChange, $GUI_ENABLE)
 
    SetLog($INFO, "Bot has stopped", $COLOR_RED)
 EndFunc
