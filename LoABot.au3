@@ -213,6 +213,14 @@ Func ScreenToPosInfo($screenInfo)
    Return $infoArr[1]
 EndFunc
 
+Func ClickControlPos2($posInfo, $clickCount = 1, $delayMsec = 300, $speed = 300)
+
+   If _Sleep($delayMsec) Then Return
+
+   Local $pos = ControlPos($posInfo)
+   MouseClick("left", $pos[0], $pos[1], $clickCount, $speed)
+EndFunc
+
 Func MoveControlPos($posInfo, $speed = 10, $randomDistance = 0)
    Local $pos = ControlPos($posInfo)
 

@@ -56,11 +56,11 @@ EndFunc
 
 
 Func CheckAndRunWebSkill()
-  If Not CheckForPixelList($CHECK_STATUS_WEB_SKILL_ACTIVE, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+   If Not CheckForPixelList($CHECK_STATUS_WEB_SKILL_ACTIVE, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 	  Return
    EndIf
    If _SleepAbs(300) Then Return False
-   SendKey( "S" )
+   SendKey( "A" )
    SetLog($INFO, "Web skill start", $COLOR_GREEN)
    If _SleepAbs(7000) Then Return False
 
@@ -72,7 +72,7 @@ Func CheckAndRunWebSkill()
 	  If _SleepAbs(298) Then Return False
 	  Local $now = TimerDiff($timer)
 	  _console("web skill waiting : " & ($now/1000) & ", " & $timer)
-	  If ($now / 1000 > 10) Then
+	  If ($now / 1000 > 9) Then
 		 ExitLoop
 	  EndIf
    WEnd
@@ -100,8 +100,6 @@ Func MainFishingLoop()
 
 	  $Stats_LoopCount += 1
 	  updateStats()
-
-	  CheckAndRunWebSkill()
 
 	  If $setting_enabled_fish_trap Then
 		 Local $now = TimerDiff($timer)
@@ -139,6 +137,8 @@ Func MainFishingLoop()
 		 SetLog($INFO, "Change Life HUD", $COLOR_GREEN)
 		 If _SleepAbs(1000) Then Return False
 	  EndIf
+
+	  CheckAndRunWebSkill()
 
 	  SetLog($INFO, "Throw fishing rod", $COLOR_DARKGREY)
 
@@ -210,7 +210,7 @@ Func MainUnlimitedCollectLoop()
 
 	  CloseAllMenu()
 
-	  SendKey( "G" )
+	  SendKey( "Q" )
 
 	  If $setting_open_esc_menu And Mod($tryCount, 10) == 0 Then
 		 OpenCloseEscMenu()
