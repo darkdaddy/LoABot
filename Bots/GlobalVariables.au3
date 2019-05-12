@@ -91,6 +91,8 @@ Global $Stats_LoopCount = 0
 Global $Stats_FishCatchCount = 0
 Global $Stats_FishFailureCount = 0
 Global $Stats_FishTrapCount = 0
+Global $Stats_AutoSeaTravelCount = 0
+Global $Stats_ShipRepairCount = 0
 
 ; ---------- Positions ------------
 ;Global const $POS_BUTTON_XXX = "94.6:2.3"
@@ -103,3 +105,8 @@ Global const $CHECK_STATUS_ATTACT_HUD[1] = ["47.95:99.14|0x39B6FA"]
 Global const $CHECK_STATUS_FISH_SKILL_ACTIVE[2] = ["40.15:92.34|0xBBB881", "38.02:91.14|0xD2CA9F"]
 Global const $CHECK_STATUS_WEB_SKILL_ACTIVE[6] = ["39.16:96.77|0xDDC064", "41.29:96.95|0xD0A846", "41.29:95.01|0xE3BF57", "41.34:98.43|0xBAA653", "38.85:96.4|0xD7C66D", "38.8:95.38|0xD7C66D"]
 Global const $CHECK_STATUS_FISH_OK_MARK[6] = ["49.75:46.06|0xFCD47C", "49.88:45.09|0xFFB664", "49.81:45.29|0xF0BA67", "49.94:45.96|0xF3AE5C", "49.95:43.58|0xD39765|13|8", "49.84:43.67|0xAE9562|13|8"]
+Global const $CHECK_STATUS_AUTO_SEA_TRAVEL_MARK_OFF[1] = ["56.95:91.6|0x585F4A|1|5"]
+Global const $CHECK_STATUS_NORMAL_SEA_TRAVEL_MARK_OFF[1] = ["57.11:91.69|0x494335|1|5"]
+Global const $CHECK_STATUS_LUCKY_ENERGY_END_COND[1] = ["10.53:99.45|0x010102|1|1"]
+Global const $CHECK_BUTTON_ENTER_CITY[2] = ["84.44:90.67|0x26323A|1|3", "98.13:90.3|0x27333C|1|3"]
+

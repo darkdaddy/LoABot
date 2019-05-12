@@ -250,16 +250,99 @@ Func MainSkillTripodChangeExpLoop()
    SetLog($INFO, "End Skill Tripod Change Exp Mode mode", $COLOR_BLUE)
 EndFunc
 
+Func CheckNormalSeaTravelStatus()
+
+   If CheckForPixelList($CHECK_STATUS_NORMAL_SEA_TRAVEL_MARK_OFF, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+	  Return True
+   EndIf
+   Return False
+EndFunc
 
 Func MainSeaTravelLoop()
 
    SetLog($INFO, "Start Sea Travel Mode", $COLOR_BLUE)
 
+   If Not CheckNormalSeaTravelStatus() Then
+	  SetLog($INFO, "Please reset sea trabel status.", $COLOR_RED)
+	  Return
+   EndIf
+
+   If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+	  SetLog($INFO, "Lack of lucky energe", $COLOR_RED)
+	  Return
+   EndIf
+
    While $RunState
-	  WinActivate($HWnD)
 
-	  DoKeyList($setting_sea_travel_key_list)
+	  If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+		 SetLog($INFO, "Lack of lucky energe. waiting...", $COLOR_DARKGREY)
+		 If _Sleep(10000) Then Return False
+		 Return
+	  EndIf
 
+	  If CheckNormalSeaTravelStatus() Then
+
+		 WinActivate($HWnD)
+
+		 If $Stats_AutoSeaTravelCount <= 0 Then
+			SetLog($INFO, "Started first sea travel round", $COLOR_PINK)
+		 Else
+			SetLog($INFO, "Arrived at the target", $COLOR_PINK)
+		 EndIf
+
+		 If _Sleep(1000) Then Return False
+
+		 ; Check if entering city
+		 SendKey( "Z" )
+		 If _SleepAbs(1000) Then Return False
+		 If CheckForPixelList($CHECK_BUTTON_ENTER_CITY, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+
+			ClickControlPos2("55.03:94.55", 1, 300)
+
+			ClickControlPos2("47.1:58.91", 1, 300)
+			If _SleepAbs(300) Then Return False
+
+			SetLog($INFO, "Repair ship", $COLOR_DARKGREY)
+
+			$Stats_ShipRepairCount += 1
+			updateStats()
+		 Else
+			SetLog($INFO, "Here is not nearby a port...", $COLOR_PINK)
+		 EndIf
+
+		 SendKey( "{ESCAPE}" )
+		 If _SleepAbs(800) Then Return False
+
+		 ; Set the travel route
+		 SendKey( "M" )
+		 If _Sleep(200) Then Return False
+
+		 ;DoKeyList($setting_sea_travel_key_list)
+		 ;DoKeyList("{ALTDOWN},51.56:16.25,{ALTUP},{ALTDOWN},45.64:13.85,{ALTUP},{ALTDOWN},52.18:13.39,{ALTUP},{ALTDOWN},37.71:18.84,{ALTUP}")	; Shushaia
+		 ;DoKeyList("{ALTDOWN},53.27:52.91,{ALTUP},{ALTDOWN},52.39:61.31,{ALTUP},{ALTDOWN},50.88:54.29,{ALTUP},{ALTDOWN},45.33:58.63,{ALTUP}")	; Ruteran
+		 DoKeyList("{ALTDOWN},43.15:34.16,{ALTUP},{ALTDOWN},46.99:51.15,{ALTUP},{ALTDOWN},46.99:37.95,{ALTUP},{ALTDOWN},49.79:29.46,{ALTUP}")	; Ardetein
+
+		 If _SleepAbs(500) Then Return False
+		 SendKey( "{ESCAPE}" )
+		 $Stats_AutoSeaTravelCount += 1
+		 updateStats()
+	  EndIf
+
+	  ; Get treasure
+	  Send( "Q" )
+
+	  ; Get floating matter
+	  Send( "G" )
+
+	  ; Get floating matter
+	  Send( "R" )
+
+	  If CheckForPixelList($CHECK_STATUS_AUTO_SEA_TRAVEL_MARK_OFF, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+		 SendKey( "T" )
+		 SetLog($INFO, "Resume sea travel", $COLOR_DARKGREY)
+	  EndIf
+
+	  If _Sleep(300) Then Return False
    WEnd
 
    SetLog($INFO, "End Sea Travel Mode", $COLOR_BLUE)

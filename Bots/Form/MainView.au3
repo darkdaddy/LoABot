@@ -189,7 +189,7 @@ Local $statLabelGap = 20
 GUICtrlCreateLabel("Loop Count", $x, $y, $statLabelW, 20)
 $x += $statLabelW + $statLabelGap
 $labelStats_LoopCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
-GUICtrlSetColor($labelStats_LoopCount, $COLOR_BLUE)
+GUICtrlSetColor($labelStats_LoopCount, $COLOR_BLACK)
 
 $y += 30
 $x = $contentPaneX
@@ -211,6 +211,20 @@ GUICtrlCreateLabel("Fish Trap Count", $x, $y, $statLabelW, 20)
 $x += $statLabelW + $statLabelGap
 $labelStats_FishTrapCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
 GUICtrlSetColor($labelStats_FishTrapCount, $COLOR_GREEN)
+
+$y += 30
+$x = $contentPaneX
+GUICtrlCreateLabel("Auto Sea Travel Count", $x, $y, $statLabelW, 20)
+$x += $statLabelW + $statLabelGap
+$labelStats_AutoSeaTravelCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
+GUICtrlSetColor($labelStats_AutoSeaTravelCount, $COLOR_BLUE)
+
+$y += 30
+$x = $contentPaneX
+GUICtrlCreateLabel("Ship Repair Count", $x, $y, $statLabelW, 20)
+$x += $statLabelW + $statLabelGap
+$labelStats_ShipRepairCount = GUICtrlCreateLabel("0", $x, $y, 60, 20)
+GUICtrlSetColor($labelStats_ShipRepairCount, $COLOR_BLACK)
 
 ;==================================
 ; Control Initial setting
@@ -498,7 +512,8 @@ Func clearStats()
    $Stats_FishCatchCount = 0
    $Stats_FishFailureCount = 0
    $Stats_FishTrapCount = 0
-
+   $Stats_AutoSeaTravelCount = 0
+   $Stats_ShipRepairCount = 0
    updateStats()
 EndFunc
 
@@ -507,4 +522,6 @@ Func updateStats()
    GUICtrlSetData($labelStats_FishCatchCount, $Stats_FishCatchCount)
    GUICtrlSetData($labelStats_FishFailureCount, $Stats_FishFailureCount)
    GUICtrlSetData($labelStats_FishTrapCount, $Stats_FishTrapCount)
+   GUICtrlSetData($labelStats_AutoSeaTravelCount, $Stats_AutoSeaTravelCount)
+   GUICtrlSetData($labelStats_ShipRepairCount, $Stats_ShipRepairCount)
 EndFunc

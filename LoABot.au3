@@ -215,7 +215,9 @@ EndFunc
 
 Func ClickControlPos2($posInfo, $clickCount = 1, $delayMsec = 300, $speed = 300)
 
-   If _Sleep($delayMsec) Then Return
+   If $delayMsec > 0 Then
+	  If _Sleep($delayMsec) Then Return
+   EndIf
 
    Local $pos = ControlPos($posInfo)
    MouseClick("left", $pos[0], $pos[1], $clickCount, $speed)
@@ -441,10 +443,10 @@ Func DoKeyList($keyListStr)
 
 	  If StringInStr($keyArray[$c], ":") > 0 Then
 		 ; Mouse Click
-		 ClickControlPos($keyArray[$c])
+		 ClickControlPos2($keyArray[$c], 1, 10)
 	  Else
 		 ; Key Press
-		 SendKey($keyArray[$c])
+		 Send($keyArray[$c])
 	  EndIf
    Next
 EndFunc
