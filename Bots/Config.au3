@@ -18,6 +18,7 @@ Global $setting_auto_mode = 0
 Global $setting_open_esc_menu = True
 Global $setting_enabled_fish_trap = False
 Global $setting_sea_travel_key_delay = 500
+Global $setting_sea_travel_key_g_enabled = False
 Global $setting_sea_travel_key_list = "{ALTDOWN},53.27:52.91,{ALTUP},{ALTDOWN},52.39:61.31,{ALTUP},{ALTDOWN},50.88:54.29,{ALTUP},{ALTDOWN},45.33:58.63,{ALTUP}"
 ;Global $setting_sea_travel_key_list = "{ALTDOWN},52.59:20.87,{ALTUP},{ALTDOWN},45.38:21.51,{ALTUP},{ALTDOWN},52.07:23.64,{ALTUP},{ALTDOWN},37.78:26.59,{ALTUP}"
 

@@ -311,7 +311,7 @@ Func MainSeaTravelLoop()
 		 EndIf
 
 		 SendKey( "{ESCAPE}" )
-		 If _SleepAbs(800) Then Return False
+		 If _SleepAbs(1000) Then Return False
 
 		 ; Set the travel route
 		 SendKey( "M" )
@@ -320,7 +320,8 @@ Func MainSeaTravelLoop()
 		 ;DoKeyList($setting_sea_travel_key_list)
 		 ;DoKeyList("{ALTDOWN},51.56:16.25,{ALTUP},{ALTDOWN},45.64:13.85,{ALTUP},{ALTDOWN},52.18:13.39,{ALTUP},{ALTDOWN},37.71:18.84,{ALTUP}")	; Shushaia
 		 ;DoKeyList("{ALTDOWN},53.27:52.91,{ALTUP},{ALTDOWN},52.39:61.31,{ALTUP},{ALTDOWN},50.88:54.29,{ALTUP},{ALTDOWN},45.33:58.63,{ALTUP}")	; Ruteran
-		 DoKeyList("{ALTDOWN},43.15:34.16,{ALTUP},{ALTDOWN},46.99:51.15,{ALTUP},{ALTDOWN},46.99:37.95,{ALTUP},{ALTDOWN},49.79:29.46,{ALTUP}")	; Ardetein
+		 ;DoKeyList("{ALTDOWN},43.15:34.16,{ALTUP},{ALTDOWN},46.99:51.15,{ALTUP},{ALTDOWN},46.99:37.95,{ALTUP},{ALTDOWN},49.79:29.46,{ALTUP}")	; Ardetein
+		 DoKeyList("{ALTDOWN},43:33.98,{ALTUP},{ALTDOWN},42.89:32.32,{ALTUP},{ALTDOWN},49.79:29.46,{ALTUP}")	; Ardetein
 
 		 If _SleepAbs(500) Then Return False
 		 SendKey( "{ESCAPE}" )
@@ -330,12 +331,17 @@ Func MainSeaTravelLoop()
 
 	  ; Get treasure
 	  Send( "Q" )
+	  If _Sleep(200) Then Return False
 
-	  ; Get floating matter
-	  Send( "G" )
+	  If $setting_sea_travel_key_g_enabled Then
+		 ; Get floating matter
+		 Send( "G" )
+		 If _Sleep(200) Then Return False
+	  EndIf
 
 	  ; Get floating matter
 	  Send( "R" )
+	  If _Sleep(200) Then Return False
 
 	  If CheckForPixelList($CHECK_STATUS_AUTO_SEA_TRAVEL_MARK_OFF, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 SendKey( "T" )
