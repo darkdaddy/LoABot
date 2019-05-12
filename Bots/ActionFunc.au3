@@ -313,6 +313,8 @@ Func MainSeaTravelLoop()
 		 SendKey( "{ESCAPE}" )
 		 If _SleepAbs(1000) Then Return False
 
+		 If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then SendKey( "{ESCAPE}" )
+
 		 ; Set the travel route
 		 SendKey( "M" )
 		 If _Sleep(200) Then Return False
@@ -328,6 +330,8 @@ Func MainSeaTravelLoop()
 		 $Stats_AutoSeaTravelCount += 1
 		 updateStats()
 	  EndIf
+
+	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then SendKey( "{ESCAPE}" )
 
 	  ; Get treasure
 	  Send( "Q" )
