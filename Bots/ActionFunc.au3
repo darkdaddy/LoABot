@@ -262,9 +262,11 @@ Func MainSeaTravelLoop()
 
    SetLog($INFO, "Start Sea Travel Mode", $COLOR_BLUE)
 
+   If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, True, $setting_pixel_region) Then Send( "{ESCAPE}" )
+
    If Not CheckNormalSeaTravelStatus() Then
 	  SetLog($INFO, "Please reset sea trabel status.", $COLOR_RED)
-	  Return
+	  ;Return
    EndIf
 
    If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
@@ -273,6 +275,8 @@ Func MainSeaTravelLoop()
    EndIf
 
    While $RunState
+
+  	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, True, $setting_pixel_region) Then Send( "{ESCAPE}" )
 
 	  If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 SetLog($INFO, "Lack of lucky energe. waiting...", $COLOR_DARKGREY)
@@ -313,7 +317,7 @@ Func MainSeaTravelLoop()
 		 SendKey( "{ESCAPE}" )
 		 If _SleepAbs(1000) Then Return False
 
-		 If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then SendKey( "{ESCAPE}" )
+		 If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, True, $setting_pixel_region) Then Send( "{ESCAPE}" )
 
 		 ; Set the travel route
 		 SendKey( "M" )
@@ -330,8 +334,6 @@ Func MainSeaTravelLoop()
 		 $Stats_AutoSeaTravelCount += 1
 		 updateStats()
 	  EndIf
-
-	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then SendKey( "{ESCAPE}" )
 
 	  ; Get treasure
 	  Send( "Q" )

@@ -98,7 +98,7 @@ Global $Stats_ShipRepairCount = 0
 ;Global const $POS_BUTTON_XXX = "94.6:2.3"
 
 ; ---------- Screen Check ------------
-Global const $CHECK_ESC_MENU[3] = ["54.77:44.04|0xBEC0C1", "54.93:41.46|0xDBDBDB", "54.62:46.72|0xBABBBB"]
+Global const $CHECK_ESC_MENU[3] = ["39.89:33.8|0x8CB8AF", "54.56:53.46|0xBABBBB", "74.79:33.52|0x8AB5AB"]
 Global const $CHECK_FISH_TRAP_ACTIVE_ICON[1] = ["14.83:1.39|0x4F514F|10|3"]
 Global const $CHECK_SWAP_NPC_MENU[4] = ["96.78:93.54|0x29363F", "97.2:95.94|0x253139", "91.49:96.12|0x253039", "49.59:77.47|0x76CED9"]
 Global const $CHECK_STATUS_ATTACT_HUD[1] = ["47.95:99.14|0x39B6FA"]
