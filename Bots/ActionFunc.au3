@@ -262,11 +262,11 @@ Func MainSeaTravelLoop()
 
    SetLog($INFO, "Start Sea Travel Mode", $COLOR_BLUE)
 
-   If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, True, $setting_pixel_region) Then Send( "{ESCAPE}" )
+   If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then Send( "{ESCAPE}" )
 
    If Not CheckNormalSeaTravelStatus() Then
 	  SetLog($INFO, "Please reset sea trabel status.", $COLOR_RED)
-	  ;Return
+	  Return
    EndIf
 
    If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
@@ -276,7 +276,7 @@ Func MainSeaTravelLoop()
 
    While $RunState
 
-  	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, True, $setting_pixel_region) Then Send( "{ESCAPE}" )
+  	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then Send( "{ESCAPE}" )
 
 	  If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 SetLog($INFO, "Lack of lucky energe. waiting...", $COLOR_DARKGREY)
@@ -314,10 +314,10 @@ Func MainSeaTravelLoop()
 			SetLog($INFO, "Here is not nearby a port...", $COLOR_PINK)
 		 EndIf
 
-		 SendKey( "{ESCAPE}" )
+		 Send( "{ESCAPE}" )
 		 If _SleepAbs(1000) Then Return False
 
-		 If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, True, $setting_pixel_region) Then Send( "{ESCAPE}" )
+		 If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then Send( "{ESCAPE}" )
 
 		 ; Set the travel route
 		 SendKey( "M" )
