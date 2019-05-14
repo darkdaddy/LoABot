@@ -281,7 +281,7 @@ Func MainSeaTravelLoop()
 	  If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 SetLog($INFO, "Lack of lucky energe. waiting...", $COLOR_DARKGREY)
 		 If _Sleep(10000) Then Return False
-		 Return
+		 ContinueLoop
 	  EndIf
 
 	  If CheckNormalSeaTravelStatus() Then
