@@ -261,6 +261,8 @@ EndFunc
 Func MainSeaTravelLoop()
 
    SetLog($INFO, "Start Sea Travel Mode", $COLOR_BLUE)
+   SetLog($INFO, "Guide1 : resolution must be 1920x1280.", $COLOR_PURPLE)
+   SetLog($INFO, "Guide2 : World Map must be moved to 0x0.", $COLOR_PURPLE)
 
    Local $luckyEnergyCheckPos = StringReplace($CHECK_STATUS_LUCKY_ENERGY_END_COND, "X" , $setting_see_travel_min_lucky_energy_ratio, 0, 1)
 
