@@ -262,6 +262,8 @@ Func MainSeaTravelLoop()
 
    SetLog($INFO, "Start Sea Travel Mode", $COLOR_BLUE)
 
+   Local $luckyEnergyCheckPos = StringReplace($CHECK_STATUS_LUCKY_ENERGY_END_COND, "X" , $setting_see_travel_min_lucky_energy_ratio, 0, 1)
+
    If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then Send( "{ESCAPE}" )
 
    If Not CheckNormalSeaTravelStatus() Then
@@ -269,16 +271,19 @@ Func MainSeaTravelLoop()
 	  Return
    EndIf
 
-   If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+   If CheckForPixelList($luckyEnergyCheckPos, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 	  SetLog($INFO, "Lack of lucky energe", $COLOR_RED)
 	  Return
    EndIf
 
    While $RunState
 
-  	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then Send( "{ESCAPE}" )
+  	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then
+		 WinActivate($HWnD)
+		 Send( "{ESCAPE}" )
+	  EndIf
 
-	  If CheckForPixelList($CHECK_STATUS_LUCKY_ENERGY_END_COND, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+	  If CheckForPixelList($luckyEnergyCheckPos, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 SetLog($INFO, "Lack of lucky energe. waiting...", $COLOR_DARKGREY)
 		 If _Sleep(10000) Then Return False
 		 ContinueLoop
