@@ -210,13 +210,22 @@ Func MainUnlimitedCollectLoop()
 
 	  CloseAllMenu()
 
-	  SendKey( "Q" )
+	  If StringLen($setting_collect_pos) > 0 Then
+		 MoveControlPos($setting_collect_pos, 10, 1)
+		 MouseClick($MOUSE_CLICK_RIGHT)
+	  Else
+		 SendKey( "G" )
+	  EndIf
 
 	  If $setting_open_esc_menu And Mod($tryCount, 10) == 0 Then
 		 OpenCloseEscMenu()
 	  EndIf
 
-	  If _Sleep(1000) Then Return False
+	  If StringLen($setting_collect_pos) > 0 Then
+		 If _Sleep(200) Then Return False
+	  Else
+		 If _Sleep(1000) Then Return False
+	  EndIf
 	  $tryCount += 1
    WEnd
 
@@ -273,11 +282,6 @@ Func MainSeaTravelLoop()
 	  Return
    EndIf
 
-   If CheckForPixelList($luckyEnergyCheckPos, $setting_pixel_tolerance, True, $setting_pixel_region) Then
-	  SetLog($INFO, "Lack of lucky energe", $COLOR_RED)
-	  Return
-   EndIf
-
    While $RunState
 
   	  If CheckForPixelList($CHECK_ESC_MENU, $setting_pixel_tolerance, False, $setting_pixel_region) Then
@@ -285,7 +289,7 @@ Func MainSeaTravelLoop()
 		 Send( "{ESCAPE}" )
 	  EndIf
 
-	  If CheckForPixelList($luckyEnergyCheckPos, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+	  If Not CheckForPixelList($luckyEnergyCheckPos, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 SetLog($INFO, "Lack of lucky energe. waiting...", $COLOR_DARKGREY)
 		 If _Sleep(10000) Then Return False
 		 ContinueLoop
@@ -334,7 +338,8 @@ Func MainSeaTravelLoop()
 		 ;DoKeyList("{ALTDOWN},51.56:16.25,{ALTUP},{ALTDOWN},45.64:13.85,{ALTUP},{ALTDOWN},52.18:13.39,{ALTUP},{ALTDOWN},37.71:18.84,{ALTUP}")	; Shushaia
 		 ;DoKeyList("{ALTDOWN},53.27:52.91,{ALTUP},{ALTDOWN},52.39:61.31,{ALTUP},{ALTDOWN},50.88:54.29,{ALTUP},{ALTDOWN},45.33:58.63,{ALTUP}")	; Ruteran
 		 ;DoKeyList("{ALTDOWN},43.15:34.16,{ALTUP},{ALTDOWN},46.99:51.15,{ALTUP},{ALTDOWN},46.99:37.95,{ALTUP},{ALTDOWN},49.79:29.46,{ALTUP}")	; Ardetein
-		 DoKeyList("{ALTDOWN},43:33.98,{ALTUP},{ALTDOWN},42.89:32.32,{ALTUP},{ALTDOWN},49.79:29.46,{ALTUP}")	; Ardetein
+		 ;DoKeyList("{ALTDOWN},43:33.98,{ALTUP},{ALTDOWN},42.89:32.32,{ALTUP},{ALTDOWN},49.79:29.46,{ALTUP}")	; Ardetein
+		 DoKeyList("14.42:59.56,{ALTDOWN},37.19:33.33,{ALTUP},{ALTDOWN},51.45:66.3,{ALTUP},{ALTDOWN},56.79:34.35,{ALTUP},{ALTDOWN},18.67:66.94,{ALTUP}")	; Ardetein
 
 		 If _SleepAbs(500) Then Return False
 		 SendKey( "{ESCAPE}" )
@@ -344,7 +349,8 @@ Func MainSeaTravelLoop()
 
 	  ; Get treasure
 	  Send( "Q" )
-	  If _Sleep(200) Then Return False
+	  Send( "Q" )
+	  If _Sleep(300) Then Return False
 
 	  If $setting_sea_travel_key_g_enabled Then
 		 ; Get floating matter
@@ -354,7 +360,8 @@ Func MainSeaTravelLoop()
 
 	  ; Get floating matter
 	  Send( "R" )
-	  If _Sleep(200) Then Return False
+	  Send( "R" )
+	  If _Sleep(300) Then Return False
 
 	  If CheckForPixelList($CHECK_STATUS_AUTO_SEA_TRAVEL_MARK_OFF, $setting_pixel_tolerance, True, $setting_pixel_region) Then
 		 SendKey( "T" )

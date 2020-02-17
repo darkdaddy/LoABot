@@ -64,7 +64,7 @@ Global const $TRACE = 0
 Global const $DEBUG = 1
 Global const $INFO = 2
 Global const $ERROR = 3
-Global $CurrentLogLevel = 2
+Global $CurrentLogLevel = 1
 
 
 ; ---------- COLORS ------------
@@ -107,6 +107,6 @@ Global const $CHECK_STATUS_WEB_SKILL_ACTIVE[6] = ["39.16:96.77|0xDDC064", "41.29
 Global const $CHECK_STATUS_FISH_OK_MARK[6] = ["49.75:46.06|0xFCD47C", "49.88:45.09|0xFFB664", "49.81:45.29|0xF0BA67", "49.94:45.96|0xF3AE5C", "49.95:43.58|0xD39765|13|8", "49.84:43.67|0xAE9562|13|8"]
 Global const $CHECK_STATUS_AUTO_SEA_TRAVEL_MARK_OFF[1] = ["56.85:91.32|0x585F4A|1|5"]
 Global const $CHECK_STATUS_NORMAL_SEA_TRAVEL_MARK_OFF[1] = ["57.11:91.69|0x474034|1|5"]
-Global const $CHECK_STATUS_LUCKY_ENERGY_END_COND = "X:99.45|0x121216|15|1"
+Global const $CHECK_STATUS_LUCKY_ENERGY_END_COND = "X:99.45|0x7EF7CE|15|1"
 Global const $CHECK_BUTTON_ENTER_CITY[2] = ["84.44:90.67|0x26323A|1|3", "98.13:90.3|0x27333C|1|3"]
 

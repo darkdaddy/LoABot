@@ -9,7 +9,7 @@ Local $gap = 10
 Local $generalRightHeight = 0
 Local $generalBottomHeight = 70
 Local $logViewWidth = 350
-Local $logViewHeight = 440
+Local $logViewHeight = 470
 Local $frameWidth = $contentPaneX + $logViewWidth + $gap + $generalRightHeight + $tabX
 Local $frameHeight = $contentPaneY + $logViewHeight + $gap + $generalBottomHeight + $tabY
 
@@ -113,6 +113,13 @@ GUICtrlSetData($comboAutoMode, "Collect")
 GUICtrlSetData($comboAutoMode, "Sea Travel")
 _GUICtrlComboBox_SetCurSel($comboAutoMode, 1)
 $y += 30
+
+; Fishing Position
+$x = $contentPaneX
+GUICtrlCreateLabel("Collect Position", $x, $y + 5, 120, 20)
+$x += 120
+$inputCollectPos = GUICtrlCreateInput("", $x, $y, 100, 20)
+$y += 25
 
 ; Collect Mode
 $x = $contentPaneX
