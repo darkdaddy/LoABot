@@ -62,30 +62,31 @@ GUICtrlCreateTabItem("Option")
 
 $x = $contentPaneX
 $y = $contentPaneY
+Const $ValueOffsetX = 130
 
 ; Game Title
 $Label_1 = GUICtrlCreateLabel("Game Title", $x, $y + 5, 80, 20)
-$x += 120
+$x += $ValueOffsetX
 $inputGameTitle = GUICtrlCreateInput("", $x, $y, 200, 20)
 
 ; Game ThickFrame
 $x = $contentPaneX
 $y += 30
 $Label_2 = GUICtrlCreateLabel("Thick Frame", $x, $y + 5, 100, 20)
-$x += 120
+$x += $ValueOffsetX
 $inputThickFraemSize = GUICtrlCreateInput("", $x, $y, 40, 20)
 
 ; Pixel Tolerance
 $x = $contentPaneX
 $y += 30
 GUICtrlCreateLabel("Pixel Tolerance", $x, $y + 5)
-$inputPixelTolerance = GUICtrlCreateInput("0", $x + 120, $y, 40, 20)
+$inputPixelTolerance = GUICtrlCreateInput("0", $x + $ValueOffsetX, $y, 40, 20)
 
 ; Pixel Region Size
 $x = $contentPaneX
 $y += 30
 GUICtrlCreateLabel("Pixel Region Size", $x, $y + 5)
-$inputPixelRegion = GUICtrlCreateInput("0", $x + 120, $y, 40, 20)
+$inputPixelRegion = GUICtrlCreateInput("0", $x + $ValueOffsetX, $y, 40, 20)
 
 ; Bot Background Mode
 $y += 30
@@ -96,18 +97,20 @@ $y += 30
 ; Game Speed
 $x = $contentPaneX
 GUICtrlCreateLabel("Game Speed", $x, $y+5, 100, 20)
-$x += 120
+$x += $ValueOffsetX
 $sliderGameSpeed = GUICtrlCreateSlider($x, $y, 110, 20)
 GUICtrlSetLimit(-1, 100, 0) ; change min/max value
 GUICtrlSetData($sliderGameSpeed, 50)
-$x += 120
+$x += $ValueOffsetX
 $inputGameSpeed = GUICtrlCreateInput("", $x, $y, 30, 20)
 $y += 40
 
 ; Auto Mode
 $x = $contentPaneX
-GUICtrlCreateLabel("Auto Mode Select", $x, $y)
-$comboAutoMode = GUICtrlCreateCombo("", $x + 130, $y - 5, 120, $h)
+$label = GUICtrlCreateLabel("Auto Mode Select", $x, $y, 200)
+GUICtrlSetFont($label, Default, 600)
+GUICtrlSetColor($label, $COLOR_ORANGE)
+$comboAutoMode = GUICtrlCreateCombo("", $x + $ValueOffsetX, $y - 5, 120, $h)
 GUICtrlSetData($comboAutoMode, "Fishing")
 GUICtrlSetData($comboAutoMode, "Collect")
 GUICtrlSetData($comboAutoMode, "Sea Travel")
@@ -117,7 +120,7 @@ $y += 30
 ; Fishing Position
 $x = $contentPaneX
 GUICtrlCreateLabel("Collect Position", $x, $y + 5, 120, 20)
-$x += 120
+$x += $ValueOffsetX
 $inputCollectPos = GUICtrlCreateInput("", $x, $y, 100, 20)
 $y += 25
 
@@ -135,7 +138,7 @@ $y += 30
 ; Fishing Position
 $x = $contentPaneX
 $Label_2 = GUICtrlCreateLabel("Fishing Position", $x, $y + 5, 120, 20)
-$x += 120
+$x += $ValueOffsetX
 $inputFishingPos = GUICtrlCreateInput("", $x, $y, 100, 20)
 $y += 25
 
@@ -143,8 +146,8 @@ $y += 25
 $x = $contentPaneX
 $y += 10
 GUICtrlCreateLabel("Random Distance", $x, $y)
-$inputRandomDistance = GUICtrlCreateInput("0", $x + 120, $y - 5, 30, $h)
-GUICtrlCreateLabel("Pixel", $x + 153, $y)
+$inputRandomDistance = GUICtrlCreateInput("0", $x + $ValueOffsetX, $y - 5, 30, $h)
+GUICtrlCreateLabel("Pixel", $x + $ValueOffsetX + 33, $y)
 $y += $h
 
 ; Sea Travel Key List
