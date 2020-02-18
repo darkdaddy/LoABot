@@ -26,6 +26,7 @@ Global $setting_itemenchant_ratio = 3.5;22.0;
 Global $setting_itemenchant_ok_count = 5;22.0;
 Global $setting_itemenchant_button_pos = "70.15:25.36"
 Global $setting_itemenchant_sleep = 50
+Global $setting_itemenchant_move_speed = 5
 ;Global $setting_sea_travel_key_list = "{ALTDOWN},52.59:20.87,{ALTUP},{ALTDOWN},45.38:21.51,{ALTUP},{ALTDOWN},52.07:23.64,{ALTUP},{ALTDOWN},37.78:26.59,{ALTUP}"
 
 Func reloadConfig()

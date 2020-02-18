@@ -110,12 +110,13 @@ $x = $contentPaneX
 $label = GUICtrlCreateLabel("Auto Mode Select", $x, $y, 200)
 GUICtrlSetFont($label, Default, 600)
 GUICtrlSetColor($label, $COLOR_ORANGE)
-$comboAutoMode = GUICtrlCreateCombo("", $x + $ValueOffsetX, $y - 5, 120, $h)
+$comboAutoMode = GUICtrlCreateCombo("", $x + $ValueOffsetX, $y - 5, 150, $h)
 GUICtrlSetData($comboAutoMode, "Fishing")
 GUICtrlSetData($comboAutoMode, "Collect")
 GUICtrlSetData($comboAutoMode, "Sea Travel")
-GUICtrlSetData($comboAutoMode, "Item Enchant1")
-GUICtrlSetData($comboAutoMode, "Item Enchant2")
+GUICtrlSetData($comboAutoMode, "Item Enchant(ContTot)")	; Ok Mode
+GUICtrlSetData($comboAutoMode, "Item Enchant(Offering)") ; Offering Mode
+GUICtrlSetData($comboAutoMode, "Item Enchant(Real)") ; Real Mode
 _GUICtrlComboBox_SetCurSel($comboAutoMode, 1)
 $y += 30
 

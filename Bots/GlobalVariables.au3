@@ -77,8 +77,9 @@ Global Const $COLOR_DARKGREY = 0x555555
 Global Const $AUTO_MODE_FISHING = 0
 Global Const $AUTO_MODE_COLLECT = 1
 Global Const $AUTO_MODE_SEA_TRAVEL = 2
-Global Const $AUTO_MODE_ITEM_ENCHANT1 = 3
-Global Const $AUTO_MODE_ITEM_ENCHANT2 = 4
+Global Const $AUTO_MODE_ITEM_ENCHANT_CONTOK = 3
+Global Const $AUTO_MODE_ITEM_ENCHANT_OFFERING = 4
+Global Const $AUTO_MODE_ITEM_ENCHANT_REAL = 5
 
 ; ---------- Settings -----------
 Global Const $RetryWaitCount = 30

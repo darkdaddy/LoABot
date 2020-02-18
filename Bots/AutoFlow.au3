@@ -19,13 +19,17 @@ Func AutoFlow()
 
 	  MainSeaTravelLoop()
 
-   ElseIf $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT1 Then
+   ElseIf $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT_CONTOK Then
 
-	  MainItemEnchant1Loop()
+	  MainItemEnchantContOkLoop()
 
-   ElseIf $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT2 Then
+   ElseIf $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT_OFFERING Then
 
-	  MainItemEnchant2Loop()
+	  MainItemEnchantOfferingLoop()
+
+   ElseIf $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT_REAL Then
+
+	  MainItemEnchantRealLoop()
 
    EndIf
 
