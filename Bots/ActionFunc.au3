@@ -374,26 +374,24 @@ Func MainSeaTravelLoop()
    SetLog($INFO, "End Sea Travel Mode", $COLOR_BLUE)
 EndFunc
 
-
-Func MainItemEnchantLoop()
-   SetLog($INFO, "Start Item Enchant Mode", $COLOR_BLUE)
+Func MainItemEnchant1Loop()
+   SetLog($INFO, "Start Item Enchant Mode 1(Fast Ratio)", $COLOR_BLUE)
 
    Local $timer = TimerInit()
-   Local $TotCount = Round (100 / $setting_see_itemenchant_ratio);
-   Const $RatioNum = $setting_see_itemenchant_ratio * 100
+   Local $TotCount = Round (100 / $setting_itemenchant_ratio);
+   Const $RatioNum = $setting_itemenchant_ratio * 100
    Local $succCount = 0
    Local $maxCount = 0
    Local $doCount = 0
 
-   If $setting_see_itemenchant_ok_count > 0 Then
-	  $TotCount = $setting_see_itemenchant_ok_count
+   If $setting_itemenchant_ok_count > 0 Then
+	  $TotCount = $setting_itemenchant_ok_count
    EndIf
 
-   SetLog($INFO, "Setting : tot = " & $TotCount & ", ratio = " & $setting_see_itemenchant_ratio, $COLOR_BLACK)
+   SetLog($INFO, "Setting : tot = " & $TotCount & ", ratio = " & $setting_itemenchant_ratio, $COLOR_BLACK)
 
    While True
 	  Local $iRandom = Random(0, 10000, 1)
-	  ;_console("item enchant : ran =" & $iRandom)
 	  $doCount += 1
 	  If $iRandom <= $RatioNum Then
 		 $succCount += 1
@@ -414,5 +412,61 @@ Func MainItemEnchantLoop()
    Local $now = TimerDiff($timer)
    SetLog($INFO, "Result : " & Round($now/1000, 2) & " Sec, count = " & $doCount, $COLOR_ORANGE)
 
-   SetLog($INFO, "End Item Enchant Mode", $COLOR_BLUE)
+   WinActivate($HWnD)
+   ClickControlPos2($setting_itemenchant_button_pos, 1, 0, 5)
+
+   SetLog($INFO, "End Item Enchant Mode 1(Fast Ratio)", $COLOR_BLUE)
+EndFunc
+
+
+Func MainItemEnchant2Loop()
+   SetLog($INFO, "Start Item Enchant Mode 2(Offering)", $COLOR_BLUE)
+
+   Local $timer = TimerInit()
+   Local $TotCount = Round (100 / $setting_itemenchant_ratio);
+   Const $RatioNum = $setting_itemenchant_ratio * 100
+   Local $failCount = 0
+   Local $maxCount = 0
+   Local $doCount = 0
+   Local $offeringCount = $setting_itemenchant_ok_count
+
+   If $offeringCount > 0 Then
+	  $TotCount = $offeringCount
+   EndIf
+
+   SetLog($INFO, "Setting : tot = " & $TotCount & ", ratio = " & $setting_itemenchant_ratio & ", sleep = " & $setting_itemenchant_sleep, $COLOR_BLACK)
+
+   While True
+
+	  If _Sleep($setting_itemenchant_sleep) Then Return False
+	  MoveControlPos($setting_itemenchant_button_pos, 5)
+
+	  Local $iRandom = Random(0, 10000, 1)
+
+	  $doCount += 1
+	  If $iRandom > $RatioNum Then
+		 $failCount += 1
+		 SetLog($INFO, "item enchant : offering = " & $failCount & "(" & $iRandom & ")", $COLOR_PINK)
+
+		 If $maxCount < $failCount Then
+			; to do something
+			$maxCount = $failCount
+		 EndIf
+
+		 If $failCount >= $TotCount Then
+			ExitLoop
+		 EndIf
+	  Else
+		 SetLog($INFO, "item enchant : ok (" & $iRandom & ")", $COLOR_GREEN)
+		 $failCount = 0
+	  EndIf
+   WEnd
+
+   Local $now = TimerDiff($timer)
+   SetLog($INFO, "Result : " & Round($now/1000, 2) & " Sec, count = " & $doCount, $COLOR_ORANGE)
+
+   WinActivate($HWnD)
+   ClickControlPos2($setting_itemenchant_button_pos, 1, 0, 5)
+
+   SetLog($INFO, "End Item Enchant Mode 2(Offering)", $COLOR_BLUE)
 EndFunc

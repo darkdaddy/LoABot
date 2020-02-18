@@ -22,8 +22,10 @@ Global $setting_sea_travel_key_delay = 500
 Global $setting_sea_travel_key_g_enabled = False
 Global $setting_sea_travel_key_list = "{ALTDOWN},53.27:52.91,{ALTUP},{ALTDOWN},52.39:61.31,{ALTUP},{ALTDOWN},50.88:54.29,{ALTUP},{ALTDOWN},45.33:58.63,{ALTUP}"
 Global $setting_see_travel_min_lucky_energy_ratio = 16
-Global $setting_see_itemenchant_ratio = 3.5;22.0;
-Global $setting_see_itemenchant_ok_count = 5;22.0;
+Global $setting_itemenchant_ratio = 3.5;22.0;
+Global $setting_itemenchant_ok_count = 5;22.0;
+Global $setting_itemenchant_button_pos = "70.15:25.36"
+Global $setting_itemenchant_sleep = 50
 ;Global $setting_sea_travel_key_list = "{ALTDOWN},52.59:20.87,{ALTUP},{ALTDOWN},45.38:21.51,{ALTUP},{ALTDOWN},52.07:23.64,{ALTUP},{ALTDOWN},37.78:26.59,{ALTUP}"
 
 Func reloadConfig()
@@ -45,6 +47,10 @@ Func loadConfig()
    $setting_auto_mode = Number(IniRead($config, $setting_common_group, "auto_mode", "0"))
    $setting_open_esc_menu = IniRead($config, $setting_common_group, "enabled_open_esc_menu", "False") == "True" ? True : False
    $setting_enabled_fish_trap = IniRead($config, $setting_common_group, "enabled_fishing_trap", "False") == "True" ? True : False
+   $setting_itemenchant_button_pos = IniRead($config, $setting_common_group, "itemenchant_btn_pos", $setting_itemenchant_button_pos)
+   $setting_itemenchant_ratio = Number(IniRead($config, $setting_common_group, "itemenchant_ratio", $setting_itemenchant_ratio), 3)
+   $setting_itemenchant_ok_count = Number(IniRead($config, $setting_common_group, "itemenchant_ok_count", $setting_itemenchant_ok_count))
+   $setting_itemenchant_sleep = Number(IniRead($config, $setting_common_group, "itemenchant_sleep", $setting_itemenchant_sleep))
    $setting_capture_mode = $setting_bg_mode
 
    Local $arr = StringSplit($setting_thick_frame_size, ":")
@@ -63,6 +69,10 @@ Func applyConfig()
    GUICtrlSetData($inputRandomDistance, $setting_fishing_pos_random_distance)
    GUICtrlSetData($inputPixelTolerance, $setting_pixel_tolerance)
    GUICtrlSetData($inputPixelRegion, $setting_pixel_region)
+   GUICtrlSetData($inputItemEnchantButtonPos, $setting_itemenchant_button_pos)
+   GUICtrlSetData($inputItemEnchantRatio, $setting_itemenchant_ratio)
+   GUICtrlSetData($inputItemEnchantOkCount, $setting_itemenchant_ok_count)
+   GUICtrlSetData($inputItemEnchantSleep, $setting_itemenchant_sleep)
    GUICtrlSetState($checkBotBackgroundModeEnabled, $setting_bg_mode ? $GUI_CHECKED : $GUI_UNCHECKED)
    GUICtrlSetState($checkOpenEscMenuEnabled, $setting_open_esc_menu ? $GUI_CHECKED : $GUI_UNCHECKED)
    GUICtrlSetState($checkFishingTrapEnabled, $setting_enabled_fish_trap ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -91,6 +101,10 @@ Func saveConfig()
    IniWrite($config, $setting_common_group, "enabled_open_esc_menu", _IsChecked($checkOpenEscMenuEnabled))
    IniWrite($config, $setting_common_group, "enabled_fishing_trap", _IsChecked($checkFishingTrapEnabled))
    IniWrite($config, $setting_common_group, "auto_mode", _GUICtrlComboBox_GetCurSel($comboAutoMode))
+   IniWrite($config, $setting_common_group, "itemenchant_btn_pos", GUICtrlRead($inputItemEnchantButtonPos))
+   IniWrite($config, $setting_common_group, "itemenchant_ratio", GUICtrlRead($inputItemEnchantRatio))
+   IniWrite($config, $setting_common_group, "itemenchant_ok_count", GUICtrlRead($inputItemEnchantOkCount))
+   IniWrite($config, $setting_common_group, "itemenchant_sleep", GUICtrlRead($inputItemEnchantSleep))
 
 EndFunc	;==>saveConfig
 

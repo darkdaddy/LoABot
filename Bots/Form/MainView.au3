@@ -9,7 +9,7 @@ Local $gap = 10
 Local $generalRightHeight = 0
 Local $generalBottomHeight = 70
 Local $logViewWidth = 350
-Local $logViewHeight = 500
+Local $logViewHeight = 550
 Local $frameWidth = $contentPaneX + $logViewWidth + $gap + $generalRightHeight + $tabX
 Local $frameHeight = $contentPaneY + $logViewHeight + $gap + $generalBottomHeight + $tabY
 
@@ -114,7 +114,8 @@ $comboAutoMode = GUICtrlCreateCombo("", $x + $ValueOffsetX, $y - 5, 120, $h)
 GUICtrlSetData($comboAutoMode, "Fishing")
 GUICtrlSetData($comboAutoMode, "Collect")
 GUICtrlSetData($comboAutoMode, "Sea Travel")
-GUICtrlSetData($comboAutoMode, "Item Enchant")
+GUICtrlSetData($comboAutoMode, "Item Enchant1")
+GUICtrlSetData($comboAutoMode, "Item Enchant2")
 _GUICtrlComboBox_SetCurSel($comboAutoMode, 1)
 $y += 30
 
@@ -159,20 +160,30 @@ $y += 60
 $x = $contentPaneX
 $y += 10
 GUICtrlCreateLabel("Item Enchant Ratio", $x, $y)
-$inputItemEnchantRatio = GUICtrlCreateInput("0", $x + 135, $y - 5, 30, $h)
+$x += $ValueOffsetX
+$inputItemEnchantRatio = GUICtrlCreateInput("0", $x, $y - 5, 30, $h)
 
 ; Item Enchant Cont-Ok Count
 $x = $contentPaneX
 $y += 25
-GUICtrlCreateLabel("Item Enchant Ok Count", $x, $y)
-$inputItemEnchantOkCount = GUICtrlCreateInput("0", $x + 135, $y - 5, 30, $h)
+GUICtrlCreateLabel("Item Enchant Tot. Cnt", $x, $y)
+$x += $ValueOffsetX
+$inputItemEnchantOkCount = GUICtrlCreateInput("0", $x, $y - 5, 30, $h)
 
 ; Item Enchant Button Position
 $x = $contentPaneX
 $y += 25
-$Label_2 = GUICtrlCreateLabel("Item Enchant Button Position", $x, $y + 5, 180, 20)
-$x += 185
-$inputFishingPos = GUICtrlCreateInput("", $x, $y, 100, 20)
+$Label_2 = GUICtrlCreateLabel("Item Enchant Button Position", $x, $y, 170, $h)
+$x += 175
+$inputItemEnchantButtonPos = GUICtrlCreateInput("", $x, $y - 5, 100, 20)
+
+; Item Enchant Ratio
+$x = $contentPaneX
+$y += 25
+GUICtrlCreateLabel("Item Enchant Sleep", $x, $y)
+$x += $ValueOffsetX
+$inputItemEnchantSleep = GUICtrlCreateInput("0", $x, $y - 5, 50, $h)
+GUICtrlCreateLabel("Msec.", $x + 58, $y)
 
 ; Utilty Group Box
 $y += 30
