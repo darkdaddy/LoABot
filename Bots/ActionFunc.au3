@@ -416,8 +416,10 @@ Func MainItemEnchantContOkLoop()
    Local $now = TimerDiff($timer)
    SetLog($INFO, "Result : " & Round($now/1000, 2) & " Sec, count = " & $doCount, $COLOR_ORANGE)
 
-   WinActivate($HWnD)
-   ClickControlPos2($setting_itemenchant_button_pos, 1, 0, $setting_itemenchant_move_speed)
+   If $RunState Then
+	  WinActivate($HWnD)
+	  ClickControlPos2($setting_itemenchant_button_pos, 1, 0, $setting_itemenchant_move_speed)
+   EndIf
 
    SetLog($INFO, "End Item Enchant Mode", $COLOR_BLUE)
 EndFunc
@@ -472,8 +474,10 @@ Func MainItemEnchantOfferingLoop()
    Local $now = TimerDiff($timer)
    SetLog($INFO, "Result : " & Round($now/1000, 2) & " Sec, count = " & $doCount, $COLOR_ORANGE)
 
-   WinActivate($HWnD)
-   ClickControlPos2($setting_itemenchant_button_pos, 1, 0, $setting_itemenchant_move_speed)
+   If $RunState Then
+	  WinActivate($HWnD)
+	  ClickControlPos2($setting_itemenchant_button_pos, 1, 0, $setting_itemenchant_move_speed)
+   EndIf
 
    SetLog($INFO, "End Item Enchant Mode", $COLOR_BLUE)
 EndFunc
