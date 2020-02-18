@@ -8,6 +8,7 @@ Local $setting_common_group = "Default"
 Global $setting_win_title = "LOST ARK (64-bit) v.1.0.4.1"
 Global $setting_thick_frame_size = "25:1"
 Global $setting_fishing_pos = "70.15:25.36"
+Global $setting_collect_pos = "70.15:25.36"
 Global $setting_pixel_tolerance = 13
 Global $setting_pixel_region = 5
 Global $setting_game_speed_rate = 1.0
@@ -20,10 +21,9 @@ Global $setting_enabled_fish_trap = False
 Global $setting_sea_travel_key_delay = 500
 Global $setting_sea_travel_key_g_enabled = False
 Global $setting_sea_travel_key_list = "{ALTDOWN},53.27:52.91,{ALTUP},{ALTDOWN},52.39:61.31,{ALTUP},{ALTDOWN},50.88:54.29,{ALTUP},{ALTDOWN},45.33:58.63,{ALTUP}"
-Global $setting_see_travel_min_lucky_energy_ratio = 15
+Global $setting_see_travel_min_lucky_energy_ratio = 16
 Global $setting_see_itemenchant_ratio = 3.5;22.0;
 Global $setting_see_itemenchant_ok_count = 5;22.0;
-
 ;Global $setting_sea_travel_key_list = "{ALTDOWN},52.59:20.87,{ALTUP},{ALTDOWN},45.38:21.51,{ALTUP},{ALTDOWN},52.07:23.64,{ALTUP},{ALTDOWN},37.78:26.59,{ALTUP}"
 
 Func reloadConfig()
@@ -36,6 +36,7 @@ Func loadConfig()
    $setting_win_title = IniRead($config, $setting_common_group, "win_title", $setting_win_title)
    $setting_thick_frame_size = IniRead($config, $setting_common_group, "thick_frame_size", $setting_thick_frame_size)
    $setting_fishing_pos = IniRead($config, $setting_common_group, "fishing_pos", $setting_fishing_pos)
+   $setting_collect_pos = IniRead($config, $setting_common_group, "collect_pos", $setting_collect_pos)
    $setting_game_speed_rate = IniRead($config, $setting_common_group, "game_speed_rate", $setting_game_speed_rate)
    $setting_fishing_pos_random_distance = IniRead($config, $setting_common_group, "random_distance", $setting_fishing_pos_random_distance)
    $setting_pixel_tolerance = IniRead($config, $setting_common_group, "pixel_tolerance", $setting_pixel_tolerance)
@@ -57,6 +58,7 @@ Func applyConfig()
    GUICtrlSetData($inputGameTitle, $setting_win_title)
    GUICtrlSetData($inputThickFraemSize, $setting_thick_frame_size)
    GUICtrlSetData($inputFishingPos, $setting_fishing_pos)
+   GUICtrlSetData($inputCollectPos, $setting_collect_pos)
    GUICtrlSetData($inputGameSpeed, $setting_game_speed_rate)
    GUICtrlSetData($inputRandomDistance, $setting_fishing_pos_random_distance)
    GUICtrlSetData($inputPixelTolerance, $setting_pixel_tolerance)
@@ -80,6 +82,7 @@ Func saveConfig()
    IniWrite($config, $setting_common_group, "win_title", GUICtrlRead($inputGameTitle))
    IniWrite($config, $setting_common_group, "thick_frame_size", GUICtrlRead($inputThickFraemSize))
    IniWrite($config, $setting_common_group, "fishing_pos", GUICtrlRead($inputFishingPos))
+   IniWrite($config, $setting_common_group, "collect_pos", GUICtrlRead($inputCollectPos))
    IniWrite($config, $setting_common_group, "game_speed_rate", GUICtrlRead($inputGameSpeed))
    IniWrite($config, $setting_common_group, "random_distance", GUICtrlRead($inputRandomDistance))
    IniWrite($config, $setting_common_group, "pixel_tolerance", GUICtrlRead($inputPixelTolerance))
