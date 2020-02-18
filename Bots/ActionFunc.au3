@@ -428,13 +428,15 @@ EndFunc
 Func MainItemEnchantOfferingLoop()
    SetLog($INFO, "Start Item Enchant Mode (Offering)", $COLOR_BLUE)
 
-   Local $timer = TimerInit()
-   Local $TotCount = Round (100 / $setting_itemenchant_ratio);
+   Local $MagicRate = 20.5
+   Local $MagicTry = 12
+   Local $TotCount = Round ($MagicRate / $setting_itemenchant_ratio * $MagicTry);
    Const $RatioNum = $setting_itemenchant_ratio * 100
    Local $failCount = 0
    Local $maxCount = 0
    Local $doCount = 0
    Local $offeringCount = $setting_itemenchant_ok_count
+   Local $timer = TimerInit()
 
    If $offeringCount > 0 Then
 	  $TotCount = $offeringCount

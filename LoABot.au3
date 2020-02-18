@@ -55,7 +55,7 @@ HotKeySet("^+x", "btnStop")
 Func calcHotKeyFunc()
    Opt("MouseCoordMode", 1)
    Local $aPos = MouseGetPos()
-   Opt("MouseCoordMode", 2)
+   Opt("MouseCoordMode", 0)
 
    saveConfig()
    loadConfig()

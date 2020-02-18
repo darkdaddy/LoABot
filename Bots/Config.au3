@@ -22,10 +22,10 @@ Global $setting_sea_travel_key_delay = 500
 Global $setting_sea_travel_key_g_enabled = False
 Global $setting_sea_travel_key_list = "{ALTDOWN},53.27:52.91,{ALTUP},{ALTDOWN},52.39:61.31,{ALTUP},{ALTDOWN},50.88:54.29,{ALTUP},{ALTDOWN},45.33:58.63,{ALTUP}"
 Global $setting_see_travel_min_lucky_energy_ratio = 16
-Global $setting_itemenchant_ratio = 3.5;22.0;
-Global $setting_itemenchant_ok_count = 5;22.0;
-Global $setting_itemenchant_button_pos = "70.15:25.36"
-Global $setting_itemenchant_sleep = 50
+Global $setting_itemenchant_ratio = 20.5;22.0;
+Global $setting_itemenchant_ok_count = 0;22.0;
+Global $setting_itemenchant_button_pos = "39.68:67.00"
+Global $setting_itemenchant_sleep = 400
 Global $setting_itemenchant_move_speed = 5
 ;Global $setting_sea_travel_key_list = "{ALTDOWN},52.59:20.87,{ALTUP},{ALTDOWN},45.38:21.51,{ALTUP},{ALTDOWN},52.07:23.64,{ALTUP},{ALTDOWN},37.78:26.59,{ALTUP}"
 
