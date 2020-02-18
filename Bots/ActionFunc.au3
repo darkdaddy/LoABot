@@ -366,3 +366,46 @@ Func MainSeaTravelLoop()
 
    SetLog($INFO, "End Sea Travel Mode", $COLOR_BLUE)
 EndFunc
+
+
+Func MainItemEnchantLoop()
+   SetLog($INFO, "Start Item Enchant Mode", $COLOR_BLUE)
+
+   Local $timer = TimerInit()
+   Local $TotCount = Round (100 / $setting_see_itemenchant_ratio);
+   Const $RatioNum = $setting_see_itemenchant_ratio * 100
+   Local $succCount = 0
+   Local $maxCount = 0
+   Local $doCount = 0
+
+   If $setting_see_itemenchant_ok_count > 0 Then
+	  $TotCount = $setting_see_itemenchant_ok_count
+   EndIf
+
+   SetLog($INFO, "Setting : tot = " & $TotCount & ", ratio = " & $setting_see_itemenchant_ratio, $COLOR_BLACK)
+
+   While True
+	  Local $iRandom = Random(0, 10000, 1)
+	  ;_console("item enchant : ran =" & $iRandom)
+	  $doCount += 1
+	  If $iRandom <= $RatioNum Then
+		 $succCount += 1
+
+		 If $maxCount < $succCount Then
+			_console("item enchant : success = " & $succCount & "(" & $iRandom & ")")
+			$maxCount = $succCount
+		 EndIf
+
+		 If $succCount >= $TotCount Then
+			ExitLoop
+		 EndIf
+	  Else
+		 $succCount = 0
+	  EndIf
+   WEnd
+
+   Local $now = TimerDiff($timer)
+   SetLog($INFO, "Result : " & Round($now/1000, 2) & " Sec, count = " & $doCount, $COLOR_ORANGE)
+
+   SetLog($INFO, "End Item Enchant Mode", $COLOR_BLUE)
+EndFunc
