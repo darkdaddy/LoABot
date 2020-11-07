@@ -8,8 +8,8 @@ Local $contentPaneY = $tabY + 30
 Local $gap = 10
 Local $generalRightHeight = 0
 Local $generalBottomHeight = 70
-Local $logViewWidth = 350
-Local $logViewHeight = 550
+Local $logViewWidth = 370
+Local $logViewHeight = 685
 Local $frameWidth = $contentPaneX + $logViewWidth + $gap + $generalRightHeight + $tabX
 Local $frameHeight = $contentPaneY + $logViewHeight + $gap + $generalBottomHeight + $tabY
 
@@ -114,9 +114,13 @@ $comboAutoMode = GUICtrlCreateCombo("", $x + $ValueOffsetX, $y - 5, 150, $h)
 GUICtrlSetData($comboAutoMode, "Fishing")
 GUICtrlSetData($comboAutoMode, "Collect")
 GUICtrlSetData($comboAutoMode, "Sea Travel")
+GUICtrlSetData($comboAutoMode, "Skill Cast")
+GUICtrlSetData($comboAutoMode, "Channel Move")
 GUICtrlSetData($comboAutoMode, "Item Enchant(ContTot)")	; Ok Mode
 GUICtrlSetData($comboAutoMode, "Item Enchant(Offering)") ; Offering Mode
 GUICtrlSetData($comboAutoMode, "Item Enchant(Real)") ; Real Mode
+GUICtrlSetData($comboAutoMode, "Scroll Enchant(Real)") ; Real Mode
+GUICtrlSetData($comboAutoMode, "Stone HandWork")
 _GUICtrlComboBox_SetCurSel($comboAutoMode, 1)
 $y += 30
 
@@ -153,23 +157,47 @@ $inputRandomDistance = GUICtrlCreateInput("0", $x + $ValueOffsetX, $y - 5, 30, $
 GUICtrlCreateLabel("Pixel", $x + $ValueOffsetX + 33, $y)
 $y += $h
 
+; Skill Mode
+$y += 10
+$x = $contentPaneX
+$Label_2 = GUICtrlCreateLabel("Skill Key,Pos", $x, $y, 110, $h)
+$x += $ValueOffsetX
+$inputSkillKey = GUICtrlCreateInput("", $x, $y - 5, 30, 20)
+$inputSkillPos = GUICtrlCreateInput("", $x + 35, $y - 5, 70, 20)
+$inputSkillPos2 = GUICtrlCreateInput("", $x + 110, $y - 5, 70, 20)
+$y += 25
+$x = $contentPaneX
+$Label_2 = GUICtrlCreateLabel("Skill Cast Sec", $x, $y, 110, $h)
+$inputSkillSec = GUICtrlCreateInput("", $x + $ValueOffsetX, $y - 5, 30, 20)
+GUICtrlCreateLabel("Sec.", $x + $ValueOffsetX + 35, $y)
+$y += 25
+
 ; Sea Travel Key List
+$x = $contentPaneX
 $txtKeyList = _GUICtrlRichEdit_Create($mainView, "", $x, $y, 280, 50, BitOR($ES_MULTILINE, $ES_READONLY, $WS_VSCROLL))
 $y += 60
 
-; Item Enchant Ratio
+; Enchant Ratio
 $x = $contentPaneX
 $y += 10
-GUICtrlCreateLabel("Item Enchant Ratio", $x, $y)
+GUICtrlCreateLabel("Enchant Ratio", $x, $y)
 $x += $ValueOffsetX
 $inputItemEnchantRatio = GUICtrlCreateInput("0", $x, $y - 5, 30, $h)
 
 ; Item Enchant Cont-Ok Count
 $x = $contentPaneX
 $y += 25
-GUICtrlCreateLabel("Item Enchant Tot. Cnt", $x, $y)
+GUICtrlCreateLabel("Enchant Tot. Cnt", $x, $y)
 $x += $ValueOffsetX
 $inputItemEnchantOkCount = GUICtrlCreateInput("0", $x, $y - 5, 30, $h)
+
+; Enchant Sleep
+$x = $contentPaneX
+$y += 25
+GUICtrlCreateLabel("Enchant Sleep", $x, $y)
+$x += $ValueOffsetX
+$inputItemEnchantSleep = GUICtrlCreateInput("0", $x, $y - 5, 50, $h)
+GUICtrlCreateLabel("Msec.", $x + 58, $y)
 
 ; Item Enchant Button Position
 $x = $contentPaneX
@@ -178,13 +206,26 @@ $Label_2 = GUICtrlCreateLabel("Item Enchant Button Position", $x, $y, 170, $h)
 $x += 175
 $inputItemEnchantButtonPos = GUICtrlCreateInput("", $x, $y - 5, 100, 20)
 
-; Item Enchant Ratio
+; Scroll Enchant Button Position
 $x = $contentPaneX
 $y += 25
-GUICtrlCreateLabel("Item Enchant Sleep", $x, $y)
-$x += $ValueOffsetX
-$inputItemEnchantSleep = GUICtrlCreateInput("0", $x, $y - 5, 50, $h)
-GUICtrlCreateLabel("Msec.", $x + 58, $y)
+$Label_2 = GUICtrlCreateLabel("Scroll Enchant Button Position", $x, $y, 170, $h)
+$x += 175
+$inputScrollEnchantButtonPos = GUICtrlCreateInput("", $x, $y - 5, 100, 20)
+
+; Enchant Simulation Click
+$y += 18
+$x = $contentPaneX
+$checkItemEnchantSimulationClickEnabled = GUICtrlCreateCheckbox("Enchant Simulation Click", $x, $y, 300, 25)
+
+; Stone HandMake
+$x = $contentPaneX
+$y += 33
+GUICtrlCreateLabel("Stone Handmake", $x, $y)
+$inputPreferStoneHandMakeIndex = GUICtrlCreateInput("0", $x + $ValueOffsetX, $y - 5, 30, $h)
+$inputPreferStoneHandMakeMaxStep = GUICtrlCreateInput("9", $x + $ValueOffsetX + 40, $y - 5, 30, $h)
+$inputStoneHandmakeLeftTopPos = GUICtrlCreateInput("30:30", $x + $ValueOffsetX + 80, $y - 5, 80, $h)
+$checkStoneHandmakeRandom = GUICtrlCreateCheckbox("Random", $x + $ValueOffsetX + 170, $y - 8, 70, 25)
 
 ; Utilty Group Box
 $y += 30

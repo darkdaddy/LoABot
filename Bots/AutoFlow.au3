@@ -19,6 +19,10 @@ Func AutoFlow()
 
 	  MainSeaTravelLoop()
 
+   ElseIf $setting_auto_mode == $AUTO_MODE_SKILL_CAST Then
+
+	  MainSkillCastLoop()
+
    ElseIf $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT_CONTOK Then
 
 	  MainItemEnchantContOkLoop()
@@ -31,8 +35,19 @@ Func AutoFlow()
 
 	  MainItemEnchantRealLoop()
 
-   EndIf
+   ElseIf $setting_auto_mode == $AUTO_MODE_SCROLL_ENCHANT_REAL Then
 
+	  MainItemEnchantRealLoop()
+
+   ElseIf $setting_auto_mode == $AUTO_MODE_CHANNEL_MOVE Then
+
+	  MainItemChannelMoveLoop()
+
+   ElseIf $setting_auto_mode == $AUTO_MODE_STONE_HANDWORK Then
+
+	  MainStoneHandWorkLoop()
+
+   EndIf
 
    Return True
 EndFunc

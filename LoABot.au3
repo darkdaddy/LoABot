@@ -2,12 +2,12 @@
 
 #pragma compile(FileDescription, LoA Bot)
 #pragma compile(ProductName, LoA Bot)
-#pragma compile(ProductVersion, 0.10)
-#pragma compile(FileVersion, 0.10)
+#pragma compile(ProductVersion, 0.14)
+#pragma compile(FileVersion, 0.14)
 #pragma compile(LegalCopyright, DarkJaden)
 
 $sBotName = "LoA Bot"
-$sBotVersion = "0.10"
+$sBotVersion = "0.14"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
 #include <Bots/Util/SetLog.au3>
@@ -223,6 +223,18 @@ Func ClickControlPos2($posInfo, $clickCount = 1, $delayMsec = 300, $speed = 300)
    MouseClick("left", $pos[0], $pos[1], $clickCount, $speed)
 EndFunc
 
+Func CtrlRightClickControlPos($posInfo, $clickCount = 1, $delayMsec = 300, $speed = 300)
+
+   If $delayMsec > 0 Then
+	  If _Sleep($delayMsec) Then Return
+   EndIf
+
+   Local $pos = ControlPos($posInfo)
+   Send("{CTRLDOWN}")
+   MouseClick("right", $pos[0], $pos[1], $clickCount, $speed)
+   Send("{CTRLUP}")
+EndFunc
+
 Func MoveControlPos($posInfo, $speed = 10, $randomDistance = 0)
    Local $pos = ControlPos($posInfo)
 
@@ -256,14 +268,19 @@ EndFunc
 
 Func SendKey($key, $delay = 0)
    ;WinActivate($HWnD)
-   If $delay > 0 Then
-	  If _Sleep($delay) Then Return False
-   EndIf
-   ;Send( $key )
-   Local $currentActiveWindowTitle = WinGetTitle("[ACTIVE]")
-   ;_log($INFO, "active title : " & $sText & " => " & WinActive($sText))
-   ControlSend ($HWnd, "", $HWnd, $key)
-   WinActivate($currentActiveWindowTitle)
+   Local $keyArr = StringSplit($key, ",")
+   For $p = 1 To UBound($keyArr) - 1
+	  Local $k = $keyArr[$p]
+
+	  If $delay > 0 Then
+		 If _Sleep($delay) Then Return False
+	  EndIf
+	  ;Send( $key )
+	  Local $currentActiveWindowTitle = WinGetTitle("[ACTIVE]")
+	  ;_log($INFO, "active title : " & $sText & " => " & WinActive($sText))
+	  ControlSend ($HWnd, "", $HWnd, $k)
+	  WinActivate($currentActiveWindowTitle)
+   Next
 EndFunc
 
 Func RegionToRect($regionInfo)

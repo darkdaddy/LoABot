@@ -7,6 +7,7 @@
 	Template AutoIt script.
 
 #ce ----------------------------------------------------------------------------
+#include <Math.au3>
 
 Local const $MaxCatchFailureCount = 5
 Local const $FishingEndDelay = 7000
@@ -144,7 +145,7 @@ Func MainFishingLoop()
 
 	  If Not $setting_bg_mode Then
 		 WinActivate($HWnD)
-		 MoveControlPos($setting_fishing_pos, 10, $setting_fishing_pos_random_distance)
+		 MoveControlPos($setting_fishing_pos, 10, $setting_pos_random_distance)
 	  EndIf
 
 	  SendKey( "W" )
@@ -217,6 +218,18 @@ Func MainUnlimitedCollectLoop()
 		 SendKey( "G" )
 	  EndIf
 
+	  If Not $setting_collect_only Then
+		 If Not CheckForPixelList($CHECK_STATUS_FULL_HEALTH, $setting_pixel_tolerance, True, $setting_pixel_region) Then
+			SetLog($INFO, "monster hit me", $COLOR_RED)
+			If StringLen($setting_skill_cast_pos) > 0 Then
+			   MoveControlPos($setting_skill_cast_pos, 10, $setting_pos_random_distance)
+			EndIf
+			If StringLen($setting_skill_cast_key) > 0 Then
+			   SendKey( $setting_skill_cast_key, 1000 )
+			EndIf
+		 EndIf
+	  Endif
+
 	  If $setting_open_esc_menu And Mod($tryCount, 10) == 0 Then
 		 OpenCloseEscMenu()
 	  EndIf
@@ -226,6 +239,7 @@ Func MainUnlimitedCollectLoop()
 	  Else
 		 If _Sleep(1000) Then Return False
 	  EndIf
+
 	  $tryCount += 1
    WEnd
 
@@ -375,11 +389,17 @@ Func MainSeaTravelLoop()
 EndFunc
 
 Func MainItemEnchantContOkLoop()
+
+   If $RunState = False Then
+	  Return False
+   EndIf
+
    SetLog($INFO, "Start Item Enchant Mode (Cont. OK)", $COLOR_BLUE)
 
    Local $timer = TimerInit()
-   Local $TotCount = Round (100 / $setting_itemenchant_ratio);
+   Local $TotCount = Round ($setting_itemenchant_ratio * 5);
    Const $RatioNum = $setting_itemenchant_ratio * 100
+   Const $LOOP_LOG_STEP = 500000
    Local $succCount = 0
    Local $maxCount = 0
    Local $doCount = 0
@@ -388,16 +408,20 @@ Func MainItemEnchantContOkLoop()
 	  $TotCount = $setting_itemenchant_ok_count
    EndIf
 
+   Local $buttonPos
+   $buttonPos = $setting_itemenchant_button_pos
+
    SetLog($INFO, "Setting : tot = " & $TotCount & ", ratio = " & $setting_itemenchant_ratio, $COLOR_BLACK)
 
+   $succIndex = 0
    While $RunState
 	  Local $iRandom = Random(0, 10000, 1)
 	  $doCount += 1
 	  If $iRandom <= $RatioNum Then
 		 $succCount += 1
-
-		 If $maxCount < $succCount Then
-			SetLog($INFO, "item enchant : max success = " & $succCount & "(" & $iRandom & ")", $COLOR_PINK)
+		 $succIndex = $doCount
+		 If $maxCount < $succCount OR $setting_itemenchant_sleep > 0 Then
+			SetLog($INFO, "item enchant : ok (" & $iRandom & "), tot = " & $succCount, $COLOR_GREEN)
 			$maxCount = $succCount
 		 EndIf
 
@@ -405,12 +429,24 @@ Func MainItemEnchantContOkLoop()
 			ExitLoop
 		 EndIf
 	  Else
-		 $succCount = 0
+		 If $setting_itemenchant_sleep > 0 Then
+			SetLog($INFO, "item enchant : fail (" & $iRandom & ")", $COLOR_PINK)
+		 EndIf
+
+		 If $doCount - $succIndex > $setting_itemenchant_rate_threshold_cnt Then
+			$succCount = 0
+		 EndIf
 	  EndIf
 
 	  If $setting_itemenchant_sleep > 0 Then
 		 If _Sleep($setting_itemenchant_sleep) Then Return False
 	  EndIf
+
+	  $loop = Mod($doCount, $LOOP_LOG_STEP)
+	  If $loop = 0 Then
+		 SetLog($INFO, "item loop : " & $doCount, $COLOR_DARKGREY)
+	  EndIf
+
    WEnd
 
    Local $now = TimerDiff($timer)
@@ -418,7 +454,9 @@ Func MainItemEnchantContOkLoop()
 
    If $RunState Then
 	  WinActivate($HWnD)
-	  ClickControlPos2($setting_itemenchant_button_pos, 1, 0, $setting_itemenchant_move_speed)
+	  MoveControlPos($buttonPos, $setting_itemenchant_move_speed)
+	  ClickControlPos2($buttonPos, 3, 0, 0)
+	  ClickControlPos2($setting_scrollenchant_button_pos2, 3, 1000, 0)
    EndIf
 
    SetLog($INFO, "End Item Enchant Mode", $COLOR_BLUE)
@@ -426,7 +464,19 @@ EndFunc
 
 
 Func MainItemEnchantOfferingLoop()
+
+   If $RunState = False Then
+	  Return False
+   EndIf
+
    SetLog($INFO, "Start Item Enchant Mode (Offering)", $COLOR_BLUE)
+
+   Local $buttonPos
+   If $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT_REAL Then
+	  $buttonPos = $setting_itemenchant_button_pos
+   Else
+	  $buttonPos = $setting_scrollenchant_button_pos
+   EndIf
 
    Local $MagicRate = 20.5
    Local $MagicTry = 12
@@ -449,8 +499,11 @@ Func MainItemEnchantOfferingLoop()
 	  If $setting_itemenchant_sleep > 0 Then
 		 If _Sleep($setting_itemenchant_sleep) Then Return False
 	  EndIf
-	  MoveControlPos($setting_itemenchant_button_pos, $setting_itemenchant_move_speed)
-	  MouseClick($MOUSE_CLICK_RIGHT)
+
+	  If $setting_itemenchant_simulate_click Then
+		 MoveControlPos($buttonPos, $setting_itemenchant_move_speed)
+		 MouseClick($MOUSE_CLICK_RIGHT)
+	  EndIf
 
 	  Local $iRandom = Random(0, 10000, 1)
 
@@ -478,7 +531,9 @@ Func MainItemEnchantOfferingLoop()
 
    If $RunState Then
 	  WinActivate($HWnD)
-	  ClickControlPos2($setting_itemenchant_button_pos, 1, 0, $setting_itemenchant_move_speed)
+	  MoveControlPos($buttonPos, $setting_itemenchant_move_speed)
+	  ClickControlPos2($buttonPos, 3, 0, 0)
+	  ClickControlPos2($setting_scrollenchant_button_pos2, 3, 1000, 0)
    EndIf
 
    SetLog($INFO, "End Item Enchant Mode", $COLOR_BLUE)
@@ -486,33 +541,68 @@ EndFunc
 
 
 Func MainItemEnchantRealLoop()
+
+   If $RunState = False Then
+	  Return False
+   EndIf
+
+   Local $buttonPos
+   If $setting_auto_mode == $AUTO_MODE_ITEM_ENCHANT_REAL Then
+	  $buttonPos = $setting_itemenchant_button_pos
+   Else
+	  $buttonPos = $setting_scrollenchant_button_pos
+   EndIf
+
    SetLog($INFO, "Start Item Enchant Mode (Real)", $COLOR_BLUE)
 
    Local $timer = TimerInit()
-   Const $RatioNum = $setting_itemenchant_ratio * 100
+   Local $RatioNum = $setting_itemenchant_ratio * 100
+   If $RatioNum <= 0 Then
+	  $RatioNum = 1
+   EndIf
    Local $doCount = 0
+   Local $succCount = 0
+
+   Local $TotCount = 1
+   If $setting_itemenchant_ok_count > 0 Then
+	  $TotCount = $setting_itemenchant_ok_count
+   EndIf
 
    SetLog($INFO, "Setting : ratio = " & $setting_itemenchant_ratio & ", sleep = " & $setting_itemenchant_sleep, $COLOR_BLACK)
 
    While $RunState
 
 	  If $setting_itemenchant_sleep > 0 Then
-		 If _Sleep($setting_itemenchant_sleep) Then Return False
+		 Local $iRandomSec = Random($setting_itemenchant_sleep/2, $setting_itemenchant_sleep, 1)
+		 If _Sleep($iRandomSec) Then Return False
 	  EndIf
 
-	  MoveControlPos($setting_itemenchant_button_pos, $setting_itemenchant_move_speed)
-	  MouseClick($MOUSE_CLICK_RIGHT)
+	  If $setting_itemenchant_simulate_click And $setting_itemenchant_sleep > 0 Then
+		 MoveControlPos($buttonPos, $setting_itemenchant_move_speed)
+		 MouseClick($MOUSE_CLICK_RIGHT)
+	  EndIf
 
 	  Local $iRandom = Random(0, 10000, 1)
 
 	  $doCount += 1
 	  If $iRandom > $RatioNum Then
-		 SetLog($INFO, "item enchant : failed (" & $iRandom & ")", $COLOR_PINK)
+		 If $setting_itemenchant_sleep > 0 Then
+			SetLog($INFO, "item enchant : failed (" & $iRandom & "), try = " & $doCount, $COLOR_PINK)
+		 EndIf
+		 $succCount = 0
 	  Else
-		 SetLog($INFO, "item enchant : ok (" & $iRandom & ")", $COLOR_GREEN)
-		 WinActivate($HWnD)
-		 ClickControlPos2($setting_itemenchant_button_pos, 1, 0, $setting_itemenchant_move_speed)
-		 ExitLoop
+		 $succCount = $succCount + 1
+		 If $setting_itemenchant_sleep > 100 Then
+			SetLog($INFO, "item enchant : ok (" & $iRandom & ") , Count = " & $doCount & "(" & $succCount & ")", $COLOR_GREEN)
+		 EndIf
+
+		 If $succCount >= $TotCount Then
+			WinActivate($HWnD)
+			MoveControlPos($buttonPos, $setting_itemenchant_move_speed)
+			ClickControlPos2($buttonPos, 3, 0, 0)
+			ClickControlPos2($setting_scrollenchant_button_pos2, 3, 1000, 0)
+			ExitLoop
+		 EndIf
 	  EndIf
    WEnd
 
@@ -520,4 +610,213 @@ Func MainItemEnchantRealLoop()
    SetLog($INFO, "Result : " & Round($now/1000, 2) & " Sec, count = " & $doCount, $COLOR_ORANGE)
 
    SetLog($INFO, "End Item Enchant Test Mode", $COLOR_BLUE)
+EndFunc
+
+
+Func MainSkillCastLoop()
+   If $RunState = False Then
+	  Return False
+   EndIf
+
+   SetLog($INFO, "Start Skill Cast Mode", $COLOR_BLUE)
+   SetLog($INFO, "Setting : key = " & $setting_skill_cast_key & ", pos = " &$setting_skill_cast_pos & ", sec = " & $setting_skill_cast_sec, $COLOR_BLACK)
+
+   $doCount = 1
+
+   Local $castPosArray = [$setting_skill_cast_pos, $setting_skill_cast_pos2]
+   Local $castPosArrayCnt = UBound($castPosArray)
+   While $RunState
+
+	  $posIndex = Mod($doCount, $castPosArrayCnt)
+	  MoveControlPos($castPosArray[$posIndex], 10, $setting_pos_random_distance)
+
+	  SendKey( $setting_skill_cast_key )
+
+	  Local $iRandomSec = $setting_skill_cast_sec + Random(1, 5, 1)
+	  SetLog($INFO, "Skill Cast(" & $doCount & "), pos=" & $castPosArray[$posIndex] & " after " & $iRandomSec & " sec", $COLOR_PINK)
+	  If _Sleep($iRandomSec * 1000) Then Return False
+	  $doCount += 1
+   WEnd
+
+   SetLog($INFO, "End Skill Cast Mode", $COLOR_BLUE)
+EndFunc
+
+
+Func MainItemChannelMoveLoop()
+
+   Local $PartLeaderPos     = "9.49:42.47"
+   Local $ChannelMoveButton = "11.72:52.72"
+   Local $speedRate = 0.8
+
+   $doCount = 1
+
+   While $RunState
+	  CtrlRightClickControlPos($PartLeaderPos, 2, 0, 0)
+	  If _Sleep(300 * $speedRate) Then Return False
+	  MoveControlPos($ChannelMoveButton, 0)
+	  If _Sleep(100 * $speedRate) Then Return False
+	  ClickControlPos2($ChannelMoveButton, 1, 100 * $speedRate, 0)
+	  If _Sleep(300 * $speedRate) Then Return False
+
+	  SetLog($INFO, "Try to move channel, count = " & $doCount, $COLOR_DARKGREY)
+	  $doCount += 1
+   WEnd
+EndFunc
+
+Func MainStoneHandWorkLoop()
+   SetLog($INFO, "Start Stone HandWork Mode", $COLOR_BLUE)
+   SetLog($INFO, "Random : " & $setting_stone_handmake_random, $COLOR_PURPLE)
+   SetLog($INFO, "Prefer Item : " & $setting_stone_handmake_prefer_index + 1, $COLOR_PURPLE)
+   SetLog($INFO, "Max Stone Step : " & $setting_stone_handmake_max_step, $COLOR_PURPLE)
+
+   Const $CheckMode = False
+   Const $PreferIndex = 0
+   Const $ItemClickStepSize = 2.39
+   Const $FailureColor = 0x424242
+   Const $PixelTolerance = 9
+   Const $RegionSize = 2
+   Const $ClickSpeed = 200
+   Const $SleepRandomMsec = 100
+   Const $SuccessfulRate = 55
+   Const $FailoverRate = 45
+   Const $PreferSuccessfulRate = 65
+
+   Local $temp_pos = StringSplit($setting_stone_handmake_topleft, $PosXYSplitter)
+   If $temp_pos[0] <= 1 Then
+	   SetLog($INFO, "Error Stone HandWork Mode", $COLOR_RED)
+	  Return False
+   EndIf
+
+   Const $Item_StartX = $temp_pos[1]
+   Const $Item_StartYArray[3] = [$temp_pos[2], $temp_pos[2] + 8.97, $temp_pos[2] + 20.59]
+   Const $Button_X = $temp_pos[1] + 25.35
+
+   Local $itemStepArray[3] = [0, 0, 0]
+   Local $currentRate = 75
+   Local $clickCount = 0
+   Local $currentItemIndex = 0
+   Local $lastFailedItem3Flag = False
+
+   While $RunState
+	  If $clickCount >= ($setting_stone_handmake_max_step * 3) Then
+		 ExitLoop
+	  EndIf
+
+	  Local $prevRate = $currentRate
+
+	  ; Select Item Slot
+	  $currentItemIndex = -1
+	  Local $tryCount = 0
+
+	  If $setting_stone_handmake_random Then
+
+		 Local $i = 0
+		 Local $doCount = 0
+		 While $RunState
+			$i = Mod($doCount, 3)
+			If ($itemStepArray[$i] < $setting_stone_handmake_max_step) Then
+			   Local $iRandom = Random(0, 10000, 1)
+			   $tryCount += 1
+			   If ($i <= 1 And $iRandom < $currentRate * 100) OR ($i = 2 And $iRandom >= $currentRate * 100) Then
+				  $currentItemIndex = $i
+				  ExitLoop
+			   EndIf
+			EndIf
+			$doCount += 1
+		 WEnd
+
+	  Else
+
+		 ; Best priority
+
+		 ; Penalty Item(3) Checking
+		 If $currentRate >= $SuccessfulRate Then
+			If $itemStepArray[0] = $setting_stone_handmake_max_step And $itemStepArray[1] = $setting_stone_handmake_max_step Then	; Already clicked all
+			   $currentItemIndex = 2
+			EndIf
+		 Else
+			If ($itemStepArray[2] < $setting_stone_handmake_max_step) And ($lastFailedItem3Flag = False OR $currentRate < $FailoverRate) Then
+			   $currentItemIndex = 2
+			EndIf	; already penalty full
+		 EndIf
+
+		 If $currentItemIndex == -1 Then
+			If $setting_stone_handmake_prefer_index == -1 Then
+			   If $itemStepArray[0] <= $itemStepArray[1] Then
+				  $currentItemIndex = 0
+			   Else
+				  $currentItemIndex = 1
+			   EndIf
+			Else
+			   If $currentRate >= $PreferSuccessfulRate OR $lastFailedItem3Flag Then
+				  $currentItemIndex = $setting_stone_handmake_prefer_index
+			   Else
+				  If $setting_stone_handmake_prefer_index = 0 Then
+					 $currentItemIndex = 1
+				  Else
+					 $currentItemIndex = 0
+				  EndIf
+			   EndIf
+
+			   If $itemStepArray[$currentItemIndex] = $setting_stone_handmake_max_step Then
+				  If $currentItemIndex = 0 Then
+					 $currentItemIndex = 1
+				  Else
+					 $currentItemIndex = 0
+				  EndIf
+			   EndIf
+			EndIf
+		 EndIf
+
+	  EndIf
+
+	  $lastFailedItem3Flag = False
+
+	  ; Click Button
+	  Local $buttonPos = $Button_X & ":" & $Item_StartYArray[$currentItemIndex]
+
+	  While $RunState
+		 Local $iRandom = Random(0, 10000, 1)
+		 If $iRandom < $currentRate * 100 Then
+			; Click
+			MoveControlPos($buttonPos, 10)
+			If $CheckMode == False Then
+			   ClickControlPos2($buttonPos, 1, $ClickSpeed, 0)
+			   If _Sleep(300) Then Return False
+			Else
+			   If _Sleep($ClickSpeed) Then Return False
+			EndIf
+			;SetLog($INFO, "Stone Handmake Click : " & $iRandom / 100 & ", pos = " & $buttonPos, $COLOR_RED)
+			; Wait result
+			ExitLoop
+		 EndIf
+		 If _Sleep($SleepRandomMsec) Then Return False
+	  WEnd
+
+	  ; Check Color Result
+	  Local $checkColorPosInfo1[1];
+	  $checkColorPosInfo1[0] = ($Item_StartX + ($ItemClickStepSize * $itemStepArray[$currentItemIndex])) & ":" & $Item_StartYArray[$currentItemIndex] & "|0x" & StringMid(Hex($FailureColor), 3) & "|" & $PixelTolerance & "|" & $RegionSize
+
+	  Local $resultColor = $COLOR_BLACK
+	  If CheckForPixelList($checkColorPosInfo1, $setting_pixel_tolerance, False, $setting_pixel_region) Then
+		 ; Failure
+		 $currentRate += 10
+		 $currentRate = _Min(75, $currentRate)
+
+		 If $currentItemIndex = 2 Then $lastFailedItem3Flag = True
+	  Else
+		 ; Success
+		 $resultColor = $COLOR_GREEN
+		 $currentRate -= 10
+		 $currentRate = _Max(25, $currentRate)
+	  EndIf
+
+	  ; Result Logging..
+	  SetLog($INFO, "- item " & ($currentItemIndex + 1) & " : step = " & $itemStepArray[$currentItemIndex] + 1 & ", rate = " & $prevRate & "->" & $currentRate & ", try = " & $tryCount, $resultColor)
+
+	  $itemStepArray[$currentItemIndex] += 1
+	  $clickCount += 1
+   WEnd
+
+   SetLog($INFO, "End Stone HandWork Mode", $COLOR_BLUE)
 EndFunc
