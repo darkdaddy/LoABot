@@ -671,9 +671,9 @@ Func MainStoneHandWorkLoop()
 
    Const $CheckMode = False
    Const $PreferIndex = 0
-   Const $ItemClickStepSize = 2.39
-   Const $FailureColor = 0x424242
-   Const $PixelTolerance = 9
+   Const $ItemClickStepSize = 2.03
+   Const $FailureColor = 0x515C61
+   Const $PixelTolerance = 0xE
    Const $RegionSize = 2
    Const $ClickSpeed = 200
    Const $SleepRandomMsec = 100
@@ -689,16 +689,19 @@ Func MainStoneHandWorkLoop()
 
    Const $Item_StartX = $temp_pos[1]
    Const $Item_StartYArray[3] = [$temp_pos[2], $temp_pos[2] + 8.97, $temp_pos[2] + 20.59]
-   Const $Button_X = $temp_pos[1] + 25.35
+   Const $Button_X = $temp_pos[1] + 22.35
+   Const $DoneButtonPos = $temp_pos[1] + 10.35 & $PosXYSplitter & $temp_pos[2] + 36
 
    Local $itemStepArray[3] = [0, 0, 0]
    Local $currentRate = 75
    Local $clickCount = 0
    Local $currentItemIndex = 0
    Local $lastFailedItem3Flag = False
+   Local $doneFlag = False
 
    While $RunState
 	  If $clickCount >= ($setting_stone_handmake_max_step * 3) Then
+		 $doneFlag = True
 		 ExitLoop
 	  EndIf
 
@@ -773,7 +776,7 @@ Func MainStoneHandWorkLoop()
 	  $lastFailedItem3Flag = False
 
 	  ; Click Button
-	  Local $buttonPos = $Button_X & ":" & $Item_StartYArray[$currentItemIndex]
+	  Local $buttonPos = $Button_X & $PosXYSplitter & $Item_StartYArray[$currentItemIndex]
 
 	  While $RunState
 		 Local $iRandom = Random(0, 10000, 1)
@@ -786,7 +789,7 @@ Func MainStoneHandWorkLoop()
 			Else
 			   If _Sleep($ClickSpeed) Then Return False
 			EndIf
-			;SetLog($INFO, "Stone Handmake Click : " & $iRandom / 100 & ", pos = " & $buttonPos, $COLOR_RED)
+			;SetLog($INFO, "Stone Handmake Click : value = " & $iRandom / 100 & ", pos = " & $buttonPos, $COLOR_RED)
 			; Wait result
 			ExitLoop
 		 EndIf
@@ -795,9 +798,9 @@ Func MainStoneHandWorkLoop()
 
 	  ; Check Color Result
 	  Local $checkColorPosInfo1[1];
-	  $checkColorPosInfo1[0] = ($Item_StartX + ($ItemClickStepSize * $itemStepArray[$currentItemIndex])) & ":" & $Item_StartYArray[$currentItemIndex] & "|0x" & StringMid(Hex($FailureColor), 3) & "|" & $PixelTolerance & "|" & $RegionSize
+	  $checkColorPosInfo1[0] = ($Item_StartX + ($ItemClickStepSize * $itemStepArray[$currentItemIndex])) & $PosXYSplitter & $Item_StartYArray[$currentItemIndex] & "|0x" & StringMid(Hex($FailureColor), 3) & "|" & $PixelTolerance & "|" & $RegionSize
 
-	  Local $resultColor = $COLOR_BLACK
+	  Local $resultColor = $COLOR_GRAY
 	  If CheckForPixelList($checkColorPosInfo1, $setting_pixel_tolerance, False, $setting_pixel_region) Then
 		 ; Failure
 		 $currentRate += 10
@@ -806,7 +809,7 @@ Func MainStoneHandWorkLoop()
 		 If $currentItemIndex = 2 Then $lastFailedItem3Flag = True
 	  Else
 		 ; Success
-		 $resultColor = $COLOR_GREEN
+		 $resultColor = $COLOR_BLUE
 		 $currentRate -= 10
 		 $currentRate = _Max(25, $currentRate)
 	  EndIf
@@ -817,6 +820,12 @@ Func MainStoneHandWorkLoop()
 	  $itemStepArray[$currentItemIndex] += 1
 	  $clickCount += 1
    WEnd
+
+   If $doneFlag Then
+	  If _Sleep(3500) Then Return False
+	  MoveControlPos($DoneButtonPos, 10)
+	  ClickControlPos2($DoneButtonPos, 3, $ClickSpeed, 0)
+   EndIf
 
    SetLog($INFO, "End Stone HandWork Mode", $COLOR_BLUE)
 EndFunc
